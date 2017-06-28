@@ -31,7 +31,7 @@ class Witnesses extends React.Component {
             this.setState({customUsername: ''});
             accountWitnessVote(username, accountName, approve)
         }
-        this.onWitnessChange = e => {
+        this.onWitnessChange = (e) => {
             const customUsername = e.target.value;
             this.setState({customUsername});
         }
@@ -64,7 +64,7 @@ class Witnesses extends React.Component {
         const up = <Icon name="chevron-up-circle" />;
         let witness_vote_count = 30
         let rank = 1
-        const witnesses = sorted_witnesses.map(item => {
+        const witnesses = sorted_witnesses.map((item) => {
             const owner = item.get('owner')
             const thread = item.get('url')
             const myVote = witness_votes ? witness_votes.has(owner) : null
@@ -79,128 +79,130 @@ class Witnesses extends React.Component {
                 }
             }
             return (
-                    <tr key={owner}>
-                        <td width="75">
-                            {(rank < 10) && '0'}{rank++}
+              <tr key={owner}>
+                <td width="75">
+                  {(rank < 10) && '0'}{rank+=1}
                             &nbsp;&nbsp;
-                            <span className={classUp}>
-                                <a href="#" onClick={accountWitnessVote.bind(this, owner, !myVote)} title={translate('vote')}>{up}</a>
-                            </span>
-                        </td>
-                        <td>
-                            <Link to={'/@'+owner}>{owner}</Link>
-                        </td>
-                        <td>
-                            {witness_thread}
-                        </td>
-                    </tr>
+                  <span className={classUp}>
+                    <a href="#" onClick={accountWitnessVote.bind(this, owner, !myVote)} title={translate('vote')}>{up}</a>
+                  </span>
+                </td>
+                <td>
+                  <Link to={'/@'+owner}>{owner}</Link>
+                </td>
+                <td>
+                  {witness_thread}
+                </td>
+              </tr>
             )
         });
 
         let addl_witnesses = false;
         if(witness_votes) {
             witness_vote_count -= witness_votes.size
-            addl_witnesses = witness_votes.filter(item => {
+            addl_witnesses = witness_votes.filter((item) => {
                 return !sorted_witnesses.has(item)
-            }).map(item => {
+            }).map((item) => {
                 return (
-                       <div className="row" key={item}>
-                           <div className="column small-12">
-                              <span>{/*className="Voting"*/}
-                                  <span className="Voting__button Voting__button-up space-right Voting__button--upvoted">
-                                      <a href="#" onClick={accountWitnessVote.bind(this, item, false)}
-                                          title={translate('vote')}>{up}</a>
+                  <div className="row" key={item}>
+                    <div className="column small-12">
+                      <span>{/*className="Voting"*/}
+                        <span className="Voting__button Voting__button-up space-right Voting__button--upvoted">
+                          <a
+                              href="#"
+                              onClick={accountWitnessVote.bind(this, item, false)}
+                              title={translate('vote')}>{up}</a>
                                       &nbsp;
-                                  </span>
-                              </span>
-                             <Link to={'/@'+item}>{item}</Link>
-                           </div>
-                       </div>
+                        </span>
+                      </span>
+                      <Link to={'/@'+item}>{item}</Link>
+                    </div>
+                  </div>
                 )
             }).toArray();
         }
 
 
         return (
-            <div>
-                <div className="row">
-                    <div className="column">
-                        <h2>{translate('top_witnesses')}</h2>
-                        {current_proxy && current_proxy.length ? null :
-                            <p>
-                            <strong>{translate('you_have_votes_remaining', {votesCount: witness_vote_count})}.</strong>{' '}
-                            {translate('you_can_vote_for_maximum_of_witnesses')}.
+          <div>
+            <div className="row">
+              <div className="column">
+                <h2>{translate('top_witnesses')}</h2>
+                {current_proxy && current_proxy.length ? null :
+                <p>
+                  <strong>{translate('you_have_votes_remaining', {votesCount: witness_vote_count})}.</strong>{' '}
+                  {translate('you_can_vote_for_maximum_of_witnesses')}.
                         </p>}
-                    </div>
-                </div>
-
-                {current_proxy && current_proxy.length ? null :
-                <div className="row small-collapse">
-                    <div className="column">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>{translate('witness')}</th>
-                                    <th>{translate('information')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {witnesses.toArray()}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>}
-
-                {current_proxy && current_proxy.length ? null :
-                <div className="row">
-                    <div className="column">
-                        <p>{translate('if_you_want_to_vote_outside_of_top_enter_account_name')}.</p>
-                        <form>
-                            <div className="input-group">
-                                <span className="input-group-label">@</span>
-                                <input className="input-group-field" type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={customUsername} onChange={onWitnessChange} />
-                                <div className="input-group-button">
-                                    <button className="button" onClick={accountWitnessVote.bind(this, customUsername, !(witness_votes ? witness_votes.has(customUsername) : null))}>{translate('vote')}</button>
-                                </div>
-                            </div>
-                        </form>
-                        <br />
-                        {addl_witnesses}
-                        <br /><br />
-                     </div>
-                </div>}
-
-                <div className="row">
-                    <div className="column">
-                        <p>{translate(current_proxy && current_proxy.length ? 'witness_set' : 'set_witness_proxy', {proxy: current_proxy})}</p>
-                        {current_proxy && current_proxy.length ?
-                        <div>
-                            <div style={{paddingBottom: 10}}>{translate("witness_proxy_current")}: <strong>{}</strong></div>
-
-                            <form>
-                                <div className="input-group">
-                                    <input className="input-group-field bold" disabled type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={current_proxy} />
-                                    <div className="input-group-button">
-                                        <button style={{marginBottom: 0}} className="button" onClick={accountWitnessProxy}>{translate('witness_proxy_clear')}</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div> :
-                        <form>
-                            <div className="input-group">
-                                <span className="input-group-label">@</span>
-                                <input className="input-group-field bold" type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={proxy} onChange={(e) => {this.setState({proxy: e.target.value});}} />
-                                <div className="input-group-button">
-                                    <button style={{marginBottom: 0}} className="button" onClick={accountWitnessProxy}>{translate('witness_proxy_set')}</button>
-                                </div>
-                            </div>
-                        </form>}
-                        {this.state.proxyFailed && <p className="error">{translate("proxy_update_error")}.</p>}
-                        <br />
-                     </div>
-                </div>
+              </div>
             </div>
+
+            {current_proxy && current_proxy.length ? null :
+            <div className="row small-collapse">
+              <div className="column">
+                <table>
+                  <thead>
+                    <tr>
+                      <th />
+                      <th>{translate('witness')}</th>
+                      <th>{translate('information')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {witnesses.toArray()}
+                  </tbody>
+                </table>
+              </div>
+            </div>}
+
+            {current_proxy && current_proxy.length ? null :
+            <div className="row">
+              <div className="column">
+                <p>{translate('if_you_want_to_vote_outside_of_top_enter_account_name')}.</p>
+                <form>
+                  <div className="input-group">
+                    <span className="input-group-label">@</span>
+                    <input className="input-group-field" type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={customUsername} onChange={onWitnessChange} />
+                    <div className="input-group-button">
+                      <button className="button" onClick={accountWitnessVote.bind(this, customUsername, !(witness_votes ? witness_votes.has(customUsername) : null))}>{translate('vote')}</button>
+                    </div>
+                  </div>
+                </form>
+                <br />
+                {addl_witnesses}
+                <br /><br />
+              </div>
+            </div>}
+
+            <div className="row">
+              <div className="column">
+                <p>{translate(current_proxy && current_proxy.length ? 'witness_set' : 'set_witness_proxy', {proxy: current_proxy})}</p>
+                {current_proxy && current_proxy.length ?
+                  <div>
+                    <div style={{paddingBottom: 10}}>{translate("witness_proxy_current")}: <strong>{}</strong></div>
+
+                    <form>
+                      <div className="input-group">
+                        <input className="input-group-field bold" disabled type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={current_proxy} />
+                        <div className="input-group-button">
+                            <button style={{marginBottom: 0}} className="button" onClick={accountWitnessProxy}>{translate('witness_proxy_clear')}</button>
+                          </div>
+                      </div>
+                    </form>
+                  </div> :
+                  <form>
+                    <div className="input-group">
+                      <span className="input-group-label">@</span>
+                      <input className="input-group-field bold" type="text" style={{float: "left", width: "75%", maxWidth: "20rem"}} value={proxy} onChange={(e) => { this.setState({proxy: e.target.value}); }} />
+                      <div className="input-group-button">
+                          <button style={{marginBottom: 0}} className="button" onClick={accountWitnessProxy}>{translate('witness_proxy_set')}</button>
+                        </div>
+                    </div>
+                  </form>}
+                {this.state.proxyFailed && <p className="error">{translate("proxy_update_error")}.</p>}
+                <br />
+              </div>
+            </div>
+          </div>
         );
     }
 }

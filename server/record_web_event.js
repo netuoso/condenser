@@ -26,7 +26,7 @@ export default function recordWebEvent(ctx, event_type, value) {
         referrer: esc(s.r, 64),
         campaign: esc(s.cn, 64)
     };
-    WebEvent.create(d, {logging: false}).catch(error => {
+    WebEvent.create(d, {logging: false}).catch((error) => {
         console.error('!!! Can\'t create web event record', error);
     });
 }

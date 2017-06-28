@@ -25,10 +25,10 @@ export default function sendEmail(template, to, params, from = null) {
     });
 
     sg.API(request)
-    .then(response => {
+    .then((response) => {
         console.log(`sent '${template}' email to '${to}'`, response.statusCode);
     })
-    .catch(error => {
+    .catch((error) => {
         console.error(`failed to send '${template}' email to '${to}'`, error);
     });
 }

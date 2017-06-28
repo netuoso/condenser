@@ -1,4 +1,4 @@
-import React from 'react';
+Aimport React from 'react';
 // import ReactMarkdown from 'react-markdown';
 import Comment from 'app/components/cards/Comment';
 import PostFull from 'app/components/cards/PostFull';
@@ -14,7 +14,6 @@ import shouldComponentUpdate from 'app/utils/shouldComponentUpdate';
 import {serverApiRecordEvent} from 'app/utils/ServerApiClient';
 
 class Post extends React.Component {
-
     static propTypes = {
         content: React.PropTypes.object.isRequired,
         post: React.PropTypes.string,
@@ -74,12 +73,12 @@ class Post extends React.Component {
             const {gray} = dis.get('stats').toJS()
             if(gray) {
                 return (
-                    <div className="Post">
-                        <div className="row">
-                            <div className="column">
-                                <div className="PostFull">
-                                    <p onClick={this.showAnywayClick}>{translate('this_post_was_hidden_due_to_low_ratings')}.{' '}
-                                    <button style={{marginBottom: 0}} className="button hollow tiny float-right" onClick={this.showAnywayClick}>{translate('show')}</button></p>
+                  <div className="Post">
+                      <div className="row">
+                          <div className="column">
+                              <div className="PostFull">
+                                  <p onClick={this.showAnywayClick}>{translate('this_post_was_hidden_due_to_low_ratings')}.{' '}
+                                      <button style={{marginBottom: 0}} className="button hollow tiny float-right" onClick={this.showAnywayClick}>{translate('show')}</button></p>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +96,7 @@ class Post extends React.Component {
         sortComments( content, replies, sort_order );
         const positiveComments = replies
             .map(reply => (
-                <Comment
+              <Comment
                     root
                     key={post + reply}
                     content={reply}
@@ -110,22 +109,22 @@ class Post extends React.Component {
 
         const negativeGroup = commentHidden &&
             (<div className="hentry Comment root Comment__negative_group">
-                <p>
-                    {translate(showNegativeComments ? 'now_showing_comments_with_low_ratings' : 'comments_were_hidden_due_to_low_ratings')}.{' '}
-                    <button className="button hollow tiny float-right" onClick={e => this.toggleNegativeReplies(e)}>
-                        {translate(showNegativeComments ? 'hide' :'show')}
+              <p>
+                  {translate(showNegativeComments ? 'now_showing_comments_with_low_ratings' : 'comments_were_hidden_due_to_low_ratings')}.{' '}
+                  <button className="button hollow tiny float-right" onClick={e => this.toggleNegativeReplies(e)}>
+                      {translate(showNegativeComments ? 'hide' :'show')}
                     </button>
                 </p>
             </div>);
 
 
-        let sort_orders = [ 'trending', 'votes', 'new'];
-        let sort_labels = [ translate('trending'), translate('votes'), translate('age') ];
-        let sort_menu = [];
+        const sort_orders = ['trending', 'votes', 'new'];
+        const sort_labels = [translate('trending'), translate('votes'), translate('age')];
+        const sort_menu = [];
         let sort_label;
 
-        let selflink = `/${dis.get('category')}/@${post}`;
-        for( let o = 0; o < sort_orders.length; ++o ){
+        const selflink = `/${dis.get('category')}/@${post}`;
+        for( let o = 0; o < sort_orders.length; ++o ) {
             if(sort_orders[o] == sort_order) sort_label = sort_labels[o];
             sort_menu.push({
                 value: sort_orders[o],
@@ -135,7 +134,7 @@ class Post extends React.Component {
         }
         const emptyPost = dis.get('created') === '1970-01-01T00:00:00' && dis.get('body') === ''
         if(emptyPost)
-            return <center>
+            return (<center>
                 <div className="NotFound float-center">
                     <div>
                         <h4 className="NotFound__header">Sorry! This page doesn't exist.</h4>
@@ -151,36 +150,36 @@ class Post extends React.Component {
                         </ul>
                     </div>
                 </div>
-            </center>
+            </center>)
 
         return (
-            <div className="Post">
-                <div className="row">
-                    <div className="column">
-                        <PostFull post={post} cont={content} />
+          <div className="Post">
+              <div className="row">
+                  <div className="column">
+                      <PostFull post={post} cont={content} />
                     </div>
                 </div>
-                {!current_user && <div className="row">
-                    <div className="column">
-                        <div className="Post__promo">
-                            {translate('authors_get_paid_when_people_like_you_upvote_their_post')}.
+              {!current_user && <div className="row">
+                  <div className="column">
+                      <div className="Post__promo">
+                          {translate('authors_get_paid_when_people_like_you_upvote_their_post')}.
                             <br /> {// remove '$' from signup_bonus before parsing it into local currency
                                     translate('if_you_enjoyed_what_you_read_earn_amount', {amount: '$'+localizedCurrency(signup_bonus.substring(1))})}
-                            <br />
-                            <button type="button" className="button sign-up" onClick={showSignUp}>Sign up now to receive <span className="free-money">FREE STEEM!</span></button>
+                          <br />
+                          <button type="button" className="button sign-up" onClick={showSignUp}>Sign up now to receive <span className="free-money">FREE STEEM!</span></button>
                         </div>
                     </div>
                 </div>}
-                <div id="comments" className="Post_comments row hfeed">
-                    <div className="column large-12">
-                        <div className="Post_comments__content">
-                            {positiveComments.length ?
+              <div id="comments" className="Post_comments row hfeed">
+                  <div className="column large-12">
+                      <div className="Post_comments__content">
+                          {positiveComments.length ?
                             (<div className="Post__comments_sort_order float-right">
-                                {translate('sort_order')}: &nbsp;
+                              {translate('sort_order')}: &nbsp;
                                 <FoundationDropdownMenu menu={sort_menu} label={sort_label} dropdownPosition="bottom" dropdownAlignment="right" />
                             </div>) : null}
-                            {positiveComments}
-                            {negativeGroup}
+                          {positiveComments}
+                          {negativeGroup}
                         </div>
                     </div>
                 </div>
@@ -191,7 +190,7 @@ class Post extends React.Component {
 
 const emptySet = Set()
 
-export default connect(state => {
+export default connect((state) => {
     const current_user = state.user.get('current')
     let ignoring
     if(current_user) {

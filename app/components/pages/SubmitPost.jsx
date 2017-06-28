@@ -21,9 +21,9 @@ class SubmitPost extends React.Component {
     render() {
         const {success} = this
         return (
-            <div className="SubmitPost">
-               <SubmitReplyEditor type="submit_story" successCallback={success} />
-            </div>
+          <div className="SubmitPost">
+            <SubmitReplyEditor type="submit_story" successCallback={success} />
+          </div>
         );
     }
 }

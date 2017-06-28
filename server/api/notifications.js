@@ -21,7 +21,7 @@ export default function useNotificationsApi(app) {
     const koaBody = koa_body();
 
     // get all notifications for account
-    router.get('/notifications/:account', function *() {
+    router.get('/notifications/:account', function* () {
         const account = this.params.account;
         console.log('-- GET /notifications/:account -->', this.session.uid, account, status(this, account));
 
@@ -35,11 +35,10 @@ export default function useNotificationsApi(app) {
             console.error('-- /notifications/:account error -->', this.session.uid, error.message);
             this.body = [];
         }
-        return;
     });
 
     // mark account's notification as read
-    router.put('/notifications/:account/:ids', function *() {
+    router.put('/notifications/:account/:ids', function* () {
         const {account, ids} = this.params;
         console.log('-- PUT /notifications/:account/:id -->', this.session.uid, account, status(this, account));
 
@@ -57,14 +56,13 @@ export default function useNotificationsApi(app) {
             console.error('-- /notifications/:account/:id error -->', this.session.uid, error.message);
             this.body = [];
         }
-        return;
     });
 
-    router.post('/notifications/register', koaBody, function *() {
+    router.post('/notifications/register', koaBody, function* () {
         this.body = '';
         try {
             const params = this.request.body;
-            const {csrf, account, webpush_params} = typeof(params) === 'string' ? JSON.parse(params) : params;
+            const {csrf, account, webpush_params} = typeof (params) === 'string' ? JSON.parse(params) : params;
             if (!checkCSRF(this, csrf)) return;
             console.log('-- POST /notifications/register -->', this.session.uid, account, webpush_params);
             if (!account || account !== this.session.a) return;
@@ -76,8 +74,8 @@ export default function useNotificationsApi(app) {
         }
     });
 
-    router.post('/notifications/send_confirm', koaBody, function *(email, id) {
-        console.log("sendign email", email,id);
+    router.post('/notifications/send_confirm', koaBody, function* (email, id) {
+        console.log("sendign email", email, id);
         sendEmail("confirm_email", email, { id });
     });
 }

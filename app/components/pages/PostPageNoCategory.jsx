@@ -5,7 +5,6 @@ import { browserHistory } from 'react-router';
 import {connect} from 'react-redux';
 
 class PostWrapper extends React.Component {
-
     constructor() {
         super();
 
@@ -20,7 +19,7 @@ class PostWrapper extends React.Component {
         const dis = this.props.content.get(post);
         if (!dis) {
             this.props.getContent({author: route_params.username, permlink: route_params.slug})
-            .then(content => {
+            .then((content) => {
                 if (content) {
                     browserHistory.replace(`/${content.category}/@${post}`)
                 }
@@ -29,9 +28,7 @@ class PostWrapper extends React.Component {
             });
         } else if (dis.get("id") === "0.0.0") { // non-existing post
             this.setState({loading: false});
-        } else {
-            if (browserHistory) browserHistory.replace(`/${dis.get('category')}/@${post}`)
-        }
+        } else if (browserHistory) browserHistory.replace(`/${dis.get('category')}/@${post}`)
     }
 
     shouldComponentUpdate(np, ns) {
@@ -42,25 +39,25 @@ class PostWrapper extends React.Component {
 
     render() {
         return (
-            <div>
-                {this.state.loading ?
-                    <center><LoadingIndicator type="circle" /></center> :
-                    <div className="NotFound float-center">
-                        <a href="/"><SvgImage name="404" width="640px" height="480px" /></a>
-                    </div>}
-            </div>
+          <div>
+            {this.state.loading ?
+              <center><LoadingIndicator type="circle" /></center> :
+              <div className="NotFound float-center">
+                <a href="/"><SvgImage name="404" width="640px" height="480px" /></a>
+              </div>}
+          </div>
         );
     }
 }
 
 const StoreWrapped = connect(
-    state => {
+    (state) => {
         return {
             content: state.global.get('content')
         };
     },
     dispatch => ({
-        getContent: (payload) => (new Promise((resolve, reject) => {
+        getContent: payload => (new Promise((resolve, reject) => {
             dispatch({type: 'GET_CONTENT', payload: {...payload, resolve, reject}})
         }))
     })

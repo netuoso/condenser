@@ -13,7 +13,6 @@ import {api} from 'steem';
 import { Link } from 'react-router';
 
 class CreateAccount extends React.Component {
-
     static propTypes = {
         loginUser: React.PropTypes.func.isRequired,
         serverBusy: React.PropTypes.bool
@@ -83,7 +82,7 @@ class CreateAccount extends React.Component {
             const pk = PrivateKey.fromWif(password);
             public_keys = [1, 2, 3, 4].map(() => pk.toPublicKey().toString());
         } catch (error) {
-            public_keys = ['owner', 'active', 'posting', 'memo'].map(role => {
+            public_keys = ['owner', 'active', 'posting', 'memo'].map((role) => {
                 const pk = PrivateKey.fromSeed(`${name}${role}${password}`);
                 return pk.toPublicKey().toString();
             });
@@ -106,14 +105,14 @@ class CreateAccount extends React.Component {
                 posting_key: public_keys[2],
                 memo_key: public_keys[3]
             })
-        }).then(r => r.json()).then(res => {
+        }).then(r => r.json()).then((res) => {
             if (res.error || res.status !== 'ok') {
                 console.error('CreateAccount server error', res.error);
                 this.setState({server_error: res.error || 'Unknown server error', loading: false});
             } else {
                 window.location = `/login.html#account=${name}&msg=accountcreated`;
             }
-        }).catch(error => {
+        }).catch((error) => {
             console.error('Caught CreateAccount server error', error);
             this.setState({server_error: (error.message ? error.message : error), loading: false});
         });
@@ -140,7 +139,7 @@ class CreateAccount extends React.Component {
             name_error = validate_account_name(name);
             if (!name_error) {
                 this.setState({name_error: ''});
-                promise = api.getAccountsAsync([name]).then(res => {
+                promise = api.getAccountsAsync([name]).then((res) => {
                     return res && res.length > 0 ? 'Account name is not available' : '';
                 });
             }
@@ -158,11 +157,11 @@ class CreateAccount extends React.Component {
 
     render() {
         if (!process.env.BROWSER) { // don't render this page on the server - it will not work until rendered in browser
-            return <div className="CreateAccount row ">
+            return (<div className="CreateAccount row ">
                 <div className="column">
                     <p className="text-center">LOADING..</p>
                 </div>
-            </div>;
+            </div>);
         }
 
         const {
@@ -177,17 +176,17 @@ class CreateAccount extends React.Component {
         const account_status = this.props.offchainUser ? this.props.offchainUser.get('account_status') : null;
 
         if (serverBusy || $STM_Config.disable_signups) {
-            return <div className="row">
+            return (<div className="row">
                 <div className="column">
                     <br />
                     <div className="callout alert">
                         <p>Membership to Steemit.com is now under invitation only because of unexpectedly high sign up rate.</p>
                     </div>
                 </div>
-            </div>;
+            </div>);
         }
         if (cryptographyFailure) {
-            return <div className="row">
+            return (<div className="row">
                 <div className="column">
                     <br />
                     <div className="callout alert">
@@ -197,11 +196,11 @@ class CreateAccount extends React.Component {
                             are well tested and known to work with steemit.com.</p>
                     </div>
                 </div>
-            </div>;
+            </div>);
         }
 
         if (loggedIn) {
-            return <div className="row">
+            return (<div className="row">
                 <div className="column">
                     <br />
                     <div className="callout alert">
@@ -209,11 +208,11 @@ class CreateAccount extends React.Component {
                         <p>Please note that Steemit can only register one account per verified user.</p>
                     </div>
                 </div>
-            </div>;
+            </div>);
         }
 
         if (account_status !== 'approved') {
-            return <div className="row">
+            return (<div className="row">
                 <div className="column">
                     <br />
                     <div className="callout alert">
@@ -223,84 +222,84 @@ class CreateAccount extends React.Component {
                         </p>
                     </div>
                 </div>
-            </div>;
+            </div>);
         }
 
         let next_step = null;
         if (server_error) {
             if (server_error === 'Email address is not confirmed') {
-                next_step = <div className="callout alert">
+                next_step = (<div className="callout alert">
                     <a href="/enter_email">Please verify your email address</a>
-                </div>;
+                </div>);
             } else if (server_error === 'Phone number is not confirmed') {
-                next_step = <div className="callout alert">
+                next_step = (<div className="callout alert">
                     <a href="/enter_mobile">Please verify your phone number</a>
-                </div>;
+                </div>);
             } else {
-                next_step = <div className="callout alert">
+                next_step = (<div className="callout alert">
                     <h5>Couldn't create account. Server returned the following error:</h5>
                     <p>{server_error}</p>
-                </div>;
+                </div>);
             }
         }
 
         return (
-            <div>
-                <div className="CreateAccount row">
-                    <div className="column">
-                        <h4>Please read the Steemit Rules and fill in the form below to create your Steemit account</h4>
-                        {/*<Progress tabIndex="0" value={95} max={100} />*/}
-                        {showRules ? <div className="CreateAccount__rules">
-                            <p>
+          <div>
+              <div className="CreateAccount row">
+                  <div className="column">
+                      <h4>Please read the Steemit Rules and fill in the form below to create your Steemit account</h4>
+                      {/*<Progress tabIndex="0" value={95} max={100} />*/}
+                      {showRules ? <div className="CreateAccount__rules">
+                          <p>
                                 The first rule of Steemit is: Do not lose your password.<br />
                                 The second rule of Steemit is: Do <strong>not</strong> lose your password.<br />
                                 The third rule of Steemit is: We cannot recover your password, or your account if you lose your password.<br />
                                 The forth rule: Do not tell anyone your password.<br />
                                 The fifth rule: Always back up your password.
                                 <br />
-                                <br />
+                              <br />
                                 Seriously, we are, for technical reasons, entirely unable to gain
                                 access to an account without knowing the password.  Steemit is a
                                 new model, entirely unlike other sites on the Internet.  It's not
                                 simply policy: <strong>We cannot recover your account or password
                                 if you lose it.</strong>
-                                <br />
+                              <br />
                                 Print out your password or write it down in a safe place.
                             </p>
 
-                            <div className="text-center">
-                            <a className="CreateAccount__rules-button" href="#" onClick={() => this.setState({showRules: false})}>
-                            <span style={{display: 'inline-block', transform: 'rotate(-90deg)'}}>&raquo;</span>
+                          <div className="text-center">
+                              <a className="CreateAccount__rules-button" href="#" onClick={() => this.setState({showRules: false})}>
+                              <span style={{display: 'inline-block', transform: 'rotate(-90deg)'}}>&raquo;</span>
                             </a>
                             </div>
-                            <hr />
+                          <hr />
                         </div> : <div className="text-center">
-                            <a className="CreateAccount__rules-button" href="#" onClick={() => this.setState({showRules: true})}>Steemit
+                          <a className="CreateAccount__rules-button" href="#" onClick={() => this.setState({showRules: true})}>Steemit
                                 Rules &nbsp; &raquo;</a>
                         </div>}
-                        <br />
-                        <form onSubmit={this.onSubmit} autoComplete="off" noValidate method="post">
-                            <div className={name_error ? 'error' : ''}>
-                            <label>ACCOUNT NAME
+                      <br />
+                      <form onSubmit={this.onSubmit} autoComplete="off" noValidate method="post">
+                          <div className={name_error ? 'error' : ''}>
+                              <label>ACCOUNT NAME
                             <input type="text" name="name" autoComplete="off" onChange={this.onNameChange} value={name} />
                             </label>
-                            <p>{name_error}</p>
+                              <p>{name_error}</p>
                             </div>
-                            { // TODO: remove this after May 20th
+                          { // TODO: remove this after May 20th
                                 this.state.account_has_keys_warning && <div className="warning">
                                     Please note: due to recent security changes if you chosen a password before during signup, this one below will override it — this is the one you need to save.
                                 </div>
                             }
-                            <GeneratedPasswordInput onChange={this.onPasswordChange} disabled={loading} showPasswordString={this.state.showPass} />
-                            <br />
-                            {next_step && <div>{next_step}<br /></div>}
-                            <noscript>
-                                <div className="callout alert">
-                                    <p>This form requires javascript to be enabled in your browser</p>
+                          <GeneratedPasswordInput onChange={this.onPasswordChange} disabled={loading} showPasswordString={this.state.showPass} />
+                          <br />
+                          {next_step && <div>{next_step}<br /></div>}
+                          <noscript>
+                              <div className="callout alert">
+                                  <p>This form requires javascript to be enabled in your browser</p>
                                 </div>
                             </noscript>
-                            {loading && <LoadingIndicator type="circle" />}
-                            <input disabled={submit_btn_disabled} type="submit" className={submit_btn_class} onClick={this.mousePosition} value="Create Account" />
+                          {loading && <LoadingIndicator type="circle" />}
+                          <input disabled={submit_btn_disabled} type="submit" className={submit_btn_class} onClick={this.mousePosition} value="Create Account" />
                         </form>
                     </div>
                 </div>
@@ -312,7 +311,7 @@ class CreateAccount extends React.Component {
 module.exports = {
     path: 'create_account',
     component: connect(
-        state => {
+        (state) => {
             return {
                 loggedIn: !!state.user.get('current'),
                 offchainUser: state.offchain.get('user'),
@@ -322,11 +321,11 @@ module.exports = {
         },
         dispatch => ({
             loginUser: (username, password) => dispatch(user.actions.usernamePasswordLogin({username, password, saveLogin: true})),
-            logout: e => {
+            logout: (e) => {
                 if (e) e.preventDefault();
                 dispatch(user.actions.logout())
             },
-            showTerms: e => {
+            showTerms: (e) => {
                 if (e) e.preventDefault();
                 dispatch(user.actions.showTerms())
             }

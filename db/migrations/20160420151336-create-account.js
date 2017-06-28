@@ -1,5 +1,5 @@
 module.exports = {
-    up: function (queryInterface, Sequelize) {
+    up(queryInterface, Sequelize) {
         return queryInterface.createTable('accounts', {
             id: {
                 allowNull: false,
@@ -53,7 +53,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE
             }
-        }).then(function () {
+        }).then(() => {
             queryInterface.addIndex('accounts', ['name'], {indicesType: 'UNIQUE'});
             queryInterface.addIndex('accounts', ['owner_key']);
             queryInterface.addIndex('accounts', ['active_key']);
@@ -61,7 +61,7 @@ module.exports = {
             queryInterface.addIndex('accounts', ['memo_key']);
         });
     },
-    down: function (queryInterface, Sequelize) {
+    down(queryInterface, Sequelize) {
         return queryInterface.dropTable('accounts');
     }
 };

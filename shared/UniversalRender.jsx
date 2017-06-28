@@ -50,7 +50,7 @@ if (process.env.BROWSER && process.env.NODE_ENV === 'development') {
 }
 
 const runRouter = (location, routes) => {
-    return new Promise((resolve) =>
+    return new Promise(resolve =>
         match({routes, location}, (...args) => resolve(args)));
 };
 
@@ -96,15 +96,15 @@ async function universalRender({ location, initial_state, offchain, ErrorPage, t
             console.log('%c%s', 'color: black; font-size: 16px;', 'This is a developer console, you must read and understand anything you paste or type here or you could compromise your account and your private keys.');
         }
         return render(
-            <Provider store={store}>
-                    <Translator>
-                <Router
-                    routes={RootRoute}
-                    history={history}
-                    onError={onRouterError}
-                    render={applyRouterMiddleware(scroll)} />
-                    </Translator>
-            </Provider>,
+          <Provider store={store}>
+            <Translator>
+              <Router
+                  routes={RootRoute}
+                  history={history}
+                  onError={onRouterError}
+                  render={applyRouterMiddleware(scroll)} />
+            </Translator>
+          </Provider>,
             document.getElementById('content')
         );
     }
@@ -130,11 +130,11 @@ async function universalRender({ location, initial_state, offchain, ErrorPage, t
 
         // If we are not loading a post, truncate state data to bring response size down.
         if (!url.match(routeRegex.Post)) {
-            for (var key in onchain.content) {
+            for (const key in onchain.content) {
                 //onchain.content[key]['body'] = onchain.content[key]['body'].substring(0, 1024) // TODO: can be removed. will be handled by steemd
                 // Count some stats then remove voting data. But keep current user's votes. (#1040)
-                onchain.content[key]['stats'] = contentStats(onchain.content[key])
-                onchain.content[key]['active_votes'] = onchain.content[key]['active_votes'].filter(vote => vote.voter === offchain.account)
+                onchain.content[key].stats = contentStats(onchain.content[key])
+                onchain.content[key].active_votes = onchain.content[key].active_votes.filter(vote => vote.voter === offchain.account)
             }
         }
 
@@ -186,7 +186,7 @@ async function universalRender({ location, initial_state, offchain, ErrorPage, t
                 body: renderToString(<NotFound />)
             };
         // Ensure error page on state exception
-        } else {
+        }
             const msg = (e.toString && e.toString()) || e.message || e;
             const stack_trace = e.stack || '[no stack]';
             console.error('State/store error: ', msg, stack_trace);
@@ -195,17 +195,16 @@ async function universalRender({ location, initial_state, offchain, ErrorPage, t
                 statusCode: 500,
                 body: renderToString(<ErrorPage />)
             };
-        }
     }
 
     let app, status, meta;
     try {
         app = renderToString(
-            <Provider store={server_store}>
-                <Translator>
-                <RouterContext { ...renderProps } />
-                </Translator>
-            </Provider>
+          <Provider store={server_store}>
+            <Translator>
+              <RouterContext {...renderProps} />
+            </Translator>
+          </Provider>
         );
         meta = extractMeta(onchain, renderProps.params);
         status = 200;

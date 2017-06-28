@@ -74,7 +74,7 @@ const service_worker_js_content = fs
     .toString();
 
 // some redirects
-app.use(function*(next) {
+app.use(function* (next) {
     // redirect to home page/feed if known account
     if (this.method === 'GET' && this.url === '/' && this.session.a) {
         this.status = 302;
@@ -123,7 +123,7 @@ app.use(function*(next) {
     // }
     // remember ch, cn, r url params in the session and remove them from url
     if (this.method === 'GET' && /\?[^\w]*(ch=|cn=|r=)/.test(this.url)) {
-        let redir = this.url.replace(/((ch|cn|r)=[^&]+)/gi, r => {
+        let redir = this.url.replace(/((ch|cn|r)=[^&]+)/gi, (r) => {
                 const p = r.split('=');
         if (p.length === 2) this.session[p[0]] = p[1];
         return '';
@@ -162,7 +162,7 @@ app.use(
 );
 
 app.use(
-    mount('/robots.txt', function*() {
+    mount('/robots.txt', function* () {
         this.set('Cache-Control', 'public, max-age=86400000');
         this.type = 'text/plain';
         this.body = 'User-agent: *\nAllow: /';
@@ -170,7 +170,7 @@ app.use(
 );
 
 app.use(
-    mount('/service-worker.js', function*() {
+    mount('/service-worker.js', function* () {
         this.set('Cache-Control', 'public, max-age=7200000');
         this.type = 'application/javascript';
         // TODO: use APP_URL from client_config.js
@@ -184,7 +184,7 @@ app.use(
 
 // set user's uid - used to identify users in logs and some other places
 // FIXME SECURITY PRIVACY cycle this uid after a period of time
-app.use(function*(next) {
+app.use(function* (next) {
     const last_visit = this.session.last_visit;
     this.session.last_visit = new Date().getTime() / 1000 | 0;
     const from_link = this.request.headers.referer;
@@ -267,7 +267,7 @@ if (env === 'development') {
 
 if (env !== 'test') {
     const appRender = require('./app_render');
-    app.use(function*() {
+    app.use(function* () {
         yield appRender(this);
         // if (app_router.dbStatus.ok) recordWebEvent(this, 'page_load');
         const bot = this.state.isBot;
@@ -284,11 +284,11 @@ if (env !== 'test') {
 
     if(env === 'production') {
         if(cluster.isMaster) {
-            for(var i = 0; i < numProcesses; i++) {
+            for(let i = 0; i < numProcesses; i++) {
                 cluster.fork();
             }
             // if a worker dies replace it so application keeps running
-            cluster.on('exit', function (worker) {
+            cluster.on('exit', (worker) => {
                 console.log('error: worker %d died, starting a new one', worker.id);
                 cluster.fork();
             });

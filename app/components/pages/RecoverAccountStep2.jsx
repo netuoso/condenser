@@ -18,7 +18,6 @@ function passwordToOwnerPubKey(account_name, password) {
 }
 
 class RecoverAccountStep2 extends React.Component {
-
     static propTypes = {
         account_to_recover: React.PropTypes.string,
         recoverAccount: React.PropTypes.func.isRequired
@@ -60,8 +59,8 @@ class RecoverAccountStep2 extends React.Component {
     }
 
     checkOldOwner(name, oldOwner) {
-        return api.getOwnerHistoryAsync(name).then(history => {
-            const res = history.filter(a => {
+        return api.getOwnerHistoryAsync(name).then((history) => {
+            const res = history.filter((a) => {
                 const owner = a.previous_owner_authority.key_auths[0][0];
                 return owner === oldOwner;
             });
@@ -82,7 +81,7 @@ class RecoverAccountStep2 extends React.Component {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({csrf: $STM_csrf, name, old_owner_key, new_owner_key, new_owner_authority})
-        }).then(r => r.json()).then(res => {
+        }).then(r => r.json()).then((res) => {
             if (res.error) {
                 console.error('request_account_recovery server error (1)', res.error);
                 this.setState({error: res.error || translate('unknown'), progress_status: ''});
@@ -90,7 +89,7 @@ class RecoverAccountStep2 extends React.Component {
                 this.setState({error: '', progress_status: translate('recovering_account') + '..'});
                 this.props.recoverAccount(name, oldPassword, newPassword, this.onRecoverFailed, this.onRecoverSuccess);
             }
-        }).catch(error => {
+        }).catch((error) => {
             console.error('request_account_recovery server error (2)', error);
             this.setState({error: (error.message ? error.message : error), progress_status: ''});
         });
@@ -102,7 +101,7 @@ class RecoverAccountStep2 extends React.Component {
         const name = this.props.account_to_recover;
         const oldOwner = passwordToOwnerPubKey(name, oldPassword);
         this.setState({progress_status: translate('checking_account_owner') + '..'});
-        this.checkOldOwner(name, oldOwner).then(res => {
+        this.checkOldOwner(name, oldOwner).then((res) => {
             if (res) {
                 this.setState({progress_status: translate('sending_recovery_request') + '..'});
                 this.requestAccountRecovery(name, oldPassword, newPassword);
@@ -114,17 +113,17 @@ class RecoverAccountStep2 extends React.Component {
 
     render() {
         if (!process.env.BROWSER) { // don't render this page on the server
-            return <div className="row">
-                <div className="column">
-                    {translate('loading')}..
+            return (<div className="row">
+              <div className="column">
+                {translate('loading')}..
                 </div>
-            </div>;
+            </div>);
         }
         const {account_to_recover} = this.props;
         if (!account_to_recover) {
-            return <Callout type="error">
-                <span>{translate('account_recovery_request_not_confirmed')}</span>
-            </Callout>;
+            return (<Callout type="error">
+              <span>{translate('account_recovery_request_not_confirmed')}</span>
+            </Callout>);
         }
         const {oldPassword, valid, error, progress_status, name_error, success} = this.state;
         const submit_btn_class = 'button action' + (!valid || !oldPassword ? ' disabled' : '');
@@ -132,47 +131,46 @@ class RecoverAccountStep2 extends React.Component {
         let submit = null;
         if (progress_status) {
             submit = <span><LoadingIndicator type="circle" inline /> {progress_status}</span>;
-        } else {
-            if (success) {
+        } else if (success) {
                 // submit = <h4>Congratulations! Your account has been recovered. Please login using your new password.</h4>;
                 window.location = `/login.html#account=${account_to_recover}&msg=accountrecovered`;
             } else {
                 submit = <input disabled={!valid} type="submit" className={submit_btn_class} value="Submit" />;
             }
-        }
         const disable_password_input = success || progress_status !== '';
 
         return (
-            <div className="RestoreAccount SignUp">
-                <div className="row">
-                    <div className="column large-6">
-                        <h2>{translate('recover_account')}</h2>
-                        <form onSubmit={this.onSubmit} autoComplete="off" noValidate>
-                            <div className={name_error ? 'error' : ''}>
-                                <label>{translate('account_name')}
-                                    <input type="text" disabled="true" autoComplete="off" value={account_to_recover} />
-                                </label>
-                                <p className="help-text">{name_error}</p>
-                            </div>
-                            <br />
-                            <div>
-                                <label>{translate('recent_password')}
-                                    <input type="password"
-                                           disabled={disable_password_input}
-                                           autoComplete="off"
-                                           value={oldPassword}
-                                           onChange={this.oldPasswordChange} />
-                                </label>
-                            </div>
-                            <br />
-                            <GeneratedPasswordInput onChange={this.onPasswordChange} disabled={disable_password_input} showPasswordString={oldPassword.length > 0} />
-                            <div className="error">{error}</div>
-                            <br />
-                            {submit}
-                        </form>
-                    </div>
-                </div>
+          <div className="RestoreAccount SignUp">
+            <div className="row">
+              <div className="column large-6">
+                <h2>{translate('recover_account')}</h2>
+                <form onSubmit={this.onSubmit} autoComplete="off" noValidate>
+                  <div className={name_error ? 'error' : ''}>
+                    <label>{translate('account_name')}
+                      <input type="text" disabled="true" autoComplete="off" value={account_to_recover} />
+                    </label>
+                    <p className="help-text">{name_error}</p>
+                  </div>
+                  <br />
+                  <div>
+                    <label>{translate('recent_password')}
+                      <input
+                          type="password"
+                          disabled={disable_password_input}
+                          autoComplete="off"
+                          value={oldPassword}
+                          onChange={this.oldPasswordChange} />
+                    </label>
+                  </div>
+                  <br />
+                  <GeneratedPasswordInput onChange={this.onPasswordChange} disabled={disable_password_input} showPasswordString={oldPassword.length > 0} />
+                  <div className="error">{error}</div>
+                  <br />
+                  {submit}
+                </form>
+              </div>
             </div>
+          </div>
         );
     }
 }
@@ -180,7 +178,7 @@ class RecoverAccountStep2 extends React.Component {
 module.exports = {
     path: 'recover_account_step_2',
     component: connect(
-        state => {
+        (state) => {
             return {
                 account_to_recover: state.offchain.get('recover_account'),
             };

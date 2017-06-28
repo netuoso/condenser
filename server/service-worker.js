@@ -1,12 +1,12 @@
-self.addEventListener('install', function(event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());
 });
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
-var clickUrl;
-self.addEventListener('push', function(event) {
-  var payload = JSON.parse(event.data.text());
+let clickUrl;
+self.addEventListener('push', (event) => {
+  const payload = JSON.parse(event.data.text());
   clickUrl = payload.url;
   event.waitUntil(
     self.registration.showNotification(payload.title, {
@@ -15,9 +15,9 @@ self.addEventListener('push', function(event) {
     })
   );
 });
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
-    self.clients.matchAll().then(function(clientList) {
+    self.clients.matchAll().then((clientList) => {
       if (clientList.length > 0) {
           if (clickUrl && 'navigate' in clientList[0]) {
               clientList[0].navigate(clickUrl);

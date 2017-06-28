@@ -53,14 +53,14 @@ function getScore(mobile) {
         headers: authHeaders({ resource, method })
     })
         .then(r => r.json())
-        .catch(error => {
+        .catch((error) => {
             console.error(
                 `ERROR: Phone ${mobile} score exception`,
                 JSON.stringify(error, null, 0)
             );
             return Promise.reject(error);
         })
-        .then(response => {
+        .then((response) => {
             const { status } = response;
             if (status.code === 300) {
                 // Transaction successfully completed
@@ -99,14 +99,14 @@ function verifySms({ mobile, confirmation_code, ip }) {
         headers: authHeaders({ resource, method, fields })
     })
         .then(r => r.json())
-        .catch(error => {
+        .catch((error) => {
             console.error(
                 `ERROR: SMS failed to ${mobile} code ${confirmation_code} req ip ${ip} exception`,
                 JSON.stringify(error, null, 0)
             );
             return Promise.reject(error);
         })
-        .then(response => {
+        .then((response) => {
             const { status } = response;
             if (status.code === 290) {
                 // Message in progress

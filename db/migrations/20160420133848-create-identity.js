@@ -1,5 +1,5 @@
 module.exports = {
-    up: function (queryInterface, Sequelize) {
+    up(queryInterface, Sequelize) {
         return queryInterface.createTable('identities', {
             id: {
                 allowNull: false,
@@ -48,13 +48,13 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE
             }
-        }).then(function () {
+        }).then(() => {
             queryInterface.addIndex('identities', ['email']);
             queryInterface.addIndex('identities', ['phone']);
             queryInterface.addIndex('identities', ['confirmation_code']);
         });
     },
-    down: function (queryInterface, Sequelize) {
+    down(queryInterface, Sequelize) {
         return queryInterface.dropTable('identities');
     }
 };

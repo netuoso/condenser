@@ -11,10 +11,10 @@ export default function useAccountRecoveryApi(app) {
     app.use(router.routes());
     const koaBody = koa_body();
 
-    router.post('/initiate_account_recovery', koaBody, function *() {
+    router.post('/initiate_account_recovery', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         let params = this.request.body;
-        params = typeof(params) === 'string' ? JSON.parse(params) : params;
+        params = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, params.csrf)) return;
         console.log('-- /initiate_account_recovery -->', this.session.uid, params);
         this.session.recover_account = null;
@@ -31,7 +31,7 @@ export default function useAccountRecoveryApi(app) {
         this.redirect('/connect/' + params.provider);
     });
 
-    router.get('/account_recovery_confirmation/:code', function *() {
+    router.get('/account_recovery_confirmation/:code', function* () {
         if (rateLimitReq(this, this.req)) return;
         const code = this.params.code;
         if (!code) return this.throw('no confirmation code', 404);
@@ -52,10 +52,10 @@ export default function useAccountRecoveryApi(app) {
         this.body = code;
     });
 
-    router.post('/api/v1/request_account_recovery', koaBody, function *() {
+    router.post('/api/v1/request_account_recovery', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         let params = this.request.body;
-        params = typeof(params) === 'string' ? JSON.parse(params) : params;
+        params = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, params.csrf)) return;
         try {
             if (!this.session.arec) {
@@ -111,11 +111,11 @@ export default function useAccountRecoveryApi(app) {
         }
     });
 
-    router.post('/api/v1/account_identity_providers', koaBody, function *() {
+    router.post('/api/v1/account_identity_providers', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         try {
             const params = this.request.body;
-            const {csrf, name, owner_key} = typeof(params) === 'string' ? JSON.parse(params) : params;
+            const {csrf, name, owner_key} = typeof (params) === 'string' ? JSON.parse(params) : params;
             if (!checkCSRF(this, csrf)) return;
             console.log('-- /account_identity_providers -->', this.session.uid, name, owner_key);
             const existing_account = yield models.Account.findOne({
@@ -146,9 +146,9 @@ export default function useAccountRecoveryApi(app) {
         }
     });
 
-    router.post('/api/v1/initiate_account_recovery_with_email', koaBody, function *() {
+    router.post('/api/v1/initiate_account_recovery_with_email', koaBody, function* () {
         const params = this.request.body;
-        const {csrf, contact_email, account_name, owner_key} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf, contact_email, account_name, owner_key} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         console.log('-- /initiate_account_recovery_with_email -->', this.session.uid, contact_email, account_name, owner_key);
         if (!account_name || !contact_email || !owner_key) {

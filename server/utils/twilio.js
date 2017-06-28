@@ -29,7 +29,7 @@ function checkEligibility(phone) {
 
 export default function verify(phone) {
     if (!client) client = new twilio.LookupsClient(accountSid, authToken);
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (!checkEligibility(phone)) {
           resolve('na');
           return;
@@ -46,8 +46,7 @@ export default function verify(phone) {
             console.error('Twilio error', JSON.stringify(error, null, 2));
             resolve('error');
           }
-        } else {
-          if (result.addOns &&
+        } else if (result.addOns &&
               result.addOns.results &&
               result.addOns.results.whitepages_pro_phone_rep &&
               result.addOns.results.whitepages_pro_phone_rep.result &&
@@ -63,7 +62,6 @@ export default function verify(phone) {
             console.error('Twilio result does not contain reputation level:', JSON.stringify(result, null, 2));
             resolve('error');
           }
-        }
       });
   });
 }

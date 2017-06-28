@@ -20,7 +20,6 @@ function passwordToOwnerPubKey(account_name, password) {
 }
 
 class RecoverAccountStep1 extends React.Component {
-
     static propTypes = {
     };
 
@@ -59,7 +58,7 @@ class RecoverAccountStep1 extends React.Component {
 
     validateAccountName(name) {
         if (!name) return;
-        api.getAccountsAsync([name]).then(res => {
+        api.getAccountsAsync([name]).then((res) => {
             this.setState({name_error: !res || res.length === 0 ? translate('account_name_is_not_found') : ''});
             if(res.length) {
                 const [account] = res
@@ -75,8 +74,8 @@ class RecoverAccountStep1 extends React.Component {
 
     validateAccountOwner(name) {
         const oldOwner = passwordToOwnerPubKey(name, this.state.password.value);
-        return api.getOwnerHistoryAsync(name).then(history => {
-            const res = history.filter(a => {
+        return api.getOwnerHistoryAsync(name).then((history) => {
+            const res = history.filter((a) => {
                 const owner = a.previous_owner_authority.key_auths[0][0];
                 return owner === oldOwner;
             });
@@ -94,7 +93,7 @@ class RecoverAccountStep1 extends React.Component {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({csrf: $STM_csrf, name, owner_key})
-        }).then(r => r.json()).then(res => {
+        }).then(r => r.json()).then((res) => {
             console.log('-- validateOffchainAccount -->', res);
             return res.error ? 'email' : res.provider;
         });
@@ -107,9 +106,9 @@ class RecoverAccountStep1 extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         const owner_key = passwordToOwnerPubKey(this.state.name, this.state.password.value);
-        this.validateAccountOwner(this.state.name).then(result => {
+        this.validateAccountOwner(this.state.name).then((result) => {
             if (result) {
-                this.getAccountIdentityProviders(this.state.name, owner_key).then(provider => {
+                this.getAccountIdentityProviders(this.state.name, owner_key).then((provider) => {
                     this.setState({show_social_login: provider});
                 });
             }
@@ -135,7 +134,7 @@ class RecoverAccountStep1 extends React.Component {
                 account_name: name,
                 owner_key
             })
-        }).then(r => r.json()).then(res => {
+        }).then(r => r.json()).then((res) => {
             if (res.error) {
                 this.setState({email_error: res.error || 'Unknown'});
             } else {
@@ -146,7 +145,7 @@ class RecoverAccountStep1 extends React.Component {
                     this.setState({email_error: translate('request_already_submitted_contact_support')});
                 }
             }
-        }).catch(error => {
+        }).catch((error) => {
             console.error('request_account_recovery server error (2)', error);
             this.setState({email_error: (error.message ? error.message : error)});
         });
@@ -159,94 +158,94 @@ class RecoverAccountStep1 extends React.Component {
         const submit_btn_class = 'button action' + (!valid ? ' disabled' : '');
         const show_account_and_passwords = !email_submitted && !show_social_login;
         return (
-            <div className="RestoreAccount SignUp">
-                {show_account_and_passwords && <div className="row">
-                    <div className="column large-4">
-                        <h2>{translate('stolen_account_recovery')}</h2>
-                        <p>
-                            {translate('recover_account_intro')}
-                        </p>
-                        <form onSubmit={this.onSubmit} noValidate>
-                            <div className={name_error ? 'error' : ''}>
-                                <label>
-                                    {translate('account_name')}
-                                    <input type="text" name="name" autoComplete="off" onChange={this.onNameChange} value={name} />
-                                </label>
-                                <p className="error">{name_error}</p>
-                            </div>
-                            <PasswordInput passwordLabel={translate('recent_password')} onChange={this.onPasswordsChange} />
-                            <br />
-                            <div className="error">{error}</div>
-                            {progress_status ? <span><LoadingIndicator type="circle" inline /> {progress_status}</span>
-                        : <input disabled={!valid} type="submit" className={submit_btn_class} value= {translate('begin_recovery')} />}
-                        </form>
-                    </div>
+          <div className="RestoreAccount SignUp">
+            {show_account_and_passwords && <div className="row">
+                <div className="column large-4">
+                    <h2>{translate('stolen_account_recovery')}</h2>
+                    <p>
+                        {translate('recover_account_intro')}
+                      </p>
+                    <form onSubmit={this.onSubmit} noValidate>
+                        <div className={name_error ? 'error' : ''}>
+                            <label>
+                                {translate('account_name')}
+                                <input type="text" name="name" autoComplete="off" onChange={this.onNameChange} value={name} />
+                              </label>
+                            <p className="error">{name_error}</p>
+                          </div>
+                        <PasswordInput passwordLabel={translate('recent_password')} onChange={this.onPasswordsChange} />
+                        <br />
+                        <div className="error">{error}</div>
+                        {progress_status ? <span><LoadingIndicator type="circle" inline /> {progress_status}</span>
+                        : <input disabled={!valid} type="submit" className={submit_btn_class} value={translate('begin_recovery')} />}
+                      </form>
+                  </div>
                 </div>}
 
-                {show_social_login && show_social_login !== 'email' &&
+            {show_social_login && show_social_login !== 'email' &&
                 <form action="/initiate_account_recovery" method="post">
-                    <input type="hidden" name="csrf" value={$STM_csrf} />
-                    <input type="hidden" name="account_name" value={name} />
-                    <input type="hidden" name="owner_key" value={owner_key} />
-                    <div className="row">
-                        <div className="column large-4">
-                            {show_social_login === 'both' ? <p>{translate('login_with_facebook_or_reddit_media_to_verify_identity')}.</p>
+                  <input type="hidden" name="csrf" value={$STM_csrf} />
+                  <input type="hidden" name="account_name" value={name} />
+                  <input type="hidden" name="owner_key" value={owner_key} />
+                  <div className="row">
+                    <div className="column large-4">
+                        {show_social_login === 'both' ? <p>{translate('login_with_facebook_or_reddit_media_to_verify_identity')}.</p>
                         : <p>{translate('login_with_social_media_to_verify_identity', {
                             provider: show_social_login.charAt(0).toUpperCase() + show_social_login.slice(1)
                         })}.</p>}
-                        </div>
-                    </div>
-                    <div className="row">
+                      </div>
+                  </div>
+                  <div className="row">
                         &nbsp;
-                    </div>
+                  </div>
                     {(show_social_login === 'both' || show_social_login === 'facebook') && <div className="row">
-                        <div className="column large-4 shrink">
-                            <SvgImage name="facebook" width="64px" height="64px" />
-                        </div>
-                        <div className="column large-8">
-                            <input type="submit" name="provider" value="facebook" className="button SignUp--fb-button" />
-                        </div>
+                      <div className="column large-4 shrink">
+                        <SvgImage name="facebook" width="64px" height="64px" />
+                      </div>
+                      <div className="column large-8">
+                        <input type="submit" name="provider" value="facebook" className="button SignUp--fb-button" />
+                      </div>
                     </div>}
-                    <div className="row">
+                  <div className="row">
                         &nbsp;
-                    </div>
+                  </div>
                     {(show_social_login === 'both' || show_social_login === 'reddit') && <div className="row">
-                        <div className="column large-4 shrink">
-                            <SvgImage name="reddit" width="64px" height="64px" />
-                        </div>
-                        <div className="column large-8">
-                            <input type="submit" name="provider" value="reddit" className="button SignUp--reddit-button" />
-                        </div>
+                      <div className="column large-4 shrink">
+                        <SvgImage name="reddit" width="64px" height="64px" />
+                      </div>
+                      <div className="column large-8">
+                        <input type="submit" name="provider" value="reddit" className="button SignUp--reddit-button" />
+                      </div>
                     </div>}
-                    <div className="row">
-                        <div className="column">&nbsp;</div>
-                    </div>
+                  <div className="row">
+                    <div className="column">&nbsp;</div>
+                  </div>
                 </form>
                 }
-                {show_social_login && show_social_login === 'email' &&
-                    <div className="row">
-                        <div className="column large-4">
-                            {
+            {show_social_login && show_social_login === 'email' &&
+                <div className="row">
+                  <div className="column large-4">
+                        {
                                 email_submitted
-                                ?   <div>
-                                        {/* currently translateHtml() does not work, using <FormattedHTMLMessage /> instead */}
-                                        <FormattedHTMLMessage id="thanks_for_submitting_request_for_account_recovery" />
-                                    </div>
+                                ? <div>
+                                  {/* currently translateHtml() does not work, using <FormattedHTMLMessage /> instead */}
+                                  <FormattedHTMLMessage id="thanks_for_submitting_request_for_account_recovery" />
+                                </div>
                                 : <form onSubmit={this.onSubmitEmail} noValidate>
-                                <p>{translate('enter_email_toverify_identity')}</p>
-                                <div className={email_error ? 'column large-4 shrink error' : 'column large-4 shrink'}>
+                                  <p>{translate('enter_email_toverify_identity')}</p>
+                                  <div className={email_error ? 'column large-4 shrink error' : 'column large-4 shrink'}>
                                     <label>{translate('email')}
-                                        <input type="text" name="email" autoComplete="off" onChange={this.onEmailChange} value={email} />
-                                    </label>
+                                    <input type="text" name="email" autoComplete="off" onChange={this.onEmailChange} value={email} />
+                                  </label>
                                     <p className="error">{email_error}</p>
                                     <input type="submit" disabled={email_error || !email} className="button hollow" value={translate('continue_with_email')} />
-                                </div>
-                            </form>
+                                  </div>
+                                </form>
                             }
-                        </div>
-                    </div>
+                      </div>
+                </div>
                 }
-            </div>
+          </div>
         );
     }
 }

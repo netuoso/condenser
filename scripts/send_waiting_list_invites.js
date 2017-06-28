@@ -22,9 +22,9 @@ models.User.findAll({
     where: {waiting_list: true, email: {$ne: null}, id: {$gt: 0}},
     order: 'id',
     limit: 1000
-}).then(users => {
+}).then((users) => {
     let counter = 1;
-    for(let u of users) {
+    for(const u of users) {
         const email = u.email.toLowerCase();
         if (email.match(/\@qq\.com$/)) continue;
         const m = email.match(/\.(\w+)$/);

@@ -93,7 +93,7 @@ export default function (html, {mutate = true} = {}) {
 
 function traverse(node, state, depth = 0) {
     if(!node || !node.childNodes) return
-    Array(...node.childNodes).forEach(child => {
+    Array(...node.childNodes).forEach((child) => {
         // console.log(depth, 'child.tag,data', child.tagName, child.data)
         const tag = child.tagName ? child.tagName.toLowerCase() : null
         if(tag) state.htmltags.add(tag)
@@ -117,7 +117,7 @@ function link(state, child) {
         state.links.add(url)
         if(state.mutate) {
             // If this link is not relative, http, or https -- add https.
-            if(! /^\/(?!\/)|(https?:)?\/\//.test(url)) {
+            if(!/^\/(?!\/)|(https?:)?\/\//.test(url)) {
                 child.setAttribute('href', "https://"+url)
             }
         }
@@ -166,14 +166,14 @@ function img(state, child) {
 function proxifyImages(doc) {
     if (!$STM_Config.img_proxy_prefix) return
     if (!doc) return;
-    [...doc.getElementsByTagName('img')].forEach(node => {
+    [...doc.getElementsByTagName('img')].forEach((node) => {
         const url = node.getAttribute('src')
-        if(! linksRe.local.test(url))
+        if(!linksRe.local.test(url))
             node.setAttribute('src', $STM_Config.img_proxy_prefix + '0x0/' + url)
     })
 }
 
-function linkifyNode(child, state) {try{
+function linkifyNode(child, state) { try{
     const tag = child.parentNode.tagName ? child.parentNode.tagName.toLowerCase() : child.parentNode.tagName
     if(tag === 'code') return
     if(tag === 'a') return
@@ -190,11 +190,11 @@ function linkifyNode(child, state) {try{
         child.parentNode.replaceChild(newChild, child)
         return newChild;
     }
-} catch(error) {console.log(error)}}
+} catch(error) { console.log(error) } }
 
 function linkify(content, mutate, hashtags, usertags, images, links) {
     // hashtag
-    content = content.replace(/(^|\s)(#[-a-z\d]+)/ig, tag => {
+    content = content.replace(/(^|\s)(#[-a-z\d]+)/ig, (tag) => {
         if(/#[\d]+$/.test(tag)) return tag // Don't allow numbers to be tags
         const space = /^\s/.test(tag) ? tag[0] : ''
         const tag2 = tag.trim().substring(1)
@@ -205,7 +205,7 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
     })
 
     // usertag (mention)
-    content = content.replace(/(^|\s)(@[a-z][-\.a-z\d]+[a-z\d])/ig, user => {
+    content = content.replace(/(^|\s)(@[a-z][-\.a-z\d]+[a-z\d])/ig, (user) => {
         const space = /^\s/.test(user) ? user[0] : ''
         const user2 = user.trim().substring(1)
         const userLower = user2.toLowerCase()
@@ -218,7 +218,7 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
         )
     })
 
-    content = content.replace(linksRe.any, ln => {
+    content = content.replace(linksRe.any, (ln) => {
         if(linksRe.image.test(ln)) {
             if(images) images.add(ln)
             return `<img src="${ipfsPrefix(ln)}" />`
@@ -261,7 +261,7 @@ function youTubeId(data) {
     return {id, url}
 }
 
-function embedVimeoNode(child, links, /*images*/) {try{
+function embedVimeoNode(child, links, /*images*/) { try{
     if(!child.data) return false
     const data = child.data
 
@@ -281,7 +281,7 @@ function embedVimeoNode(child, links, /*images*/) {try{
     // if(images) images.add('https://.../vi/' + id + '/0.jpg')
 
     return true
-} catch(error) {console.log(error); return false}}
+} catch(error) { console.log(error); return false } }
 
 function ipfsPrefix(url) {
     if($STM_Config.ipfs_prefix) {

@@ -105,7 +105,7 @@ export default function useEnterAndConfirmEmailPages(app) {
     const koaBody = koa_body();
     const rc_site_key = config.get("recaptcha.site_key");
 
-    router.get("/start/:code", function*() {
+    router.get("/start/:code", function* () {
         const code = this.params.code;
         const eid = yield models.Identity.findOne({ attributes: ["id", "user_id", "verified"], where: { provider: "email", confirmation_code: code }});
         const user = eid ? yield models.User.findOne({
@@ -160,9 +160,10 @@ export default function useEnterAndConfirmEmailPages(app) {
         }
     });
 
-    router.get("/enter_email", function*() {
+    router.get("/enter_email", function* () {
         console.log("-- /enter_email -->", this.session.uid, this.session.user, this.request.query.account);
-        const picked_account_name = this.session.picked_account_name = this.request.query.account;
+        this.session.picked_account_name = this.request.query.account;
+        const picked_account_name = this.session.picked_account_name;
         if (!picked_account_name) {
             this.flash = { error: "Please select your account name" };
             this.redirect('/pick_account');
@@ -179,57 +180,57 @@ export default function useEnterAndConfirmEmailPages(app) {
         if (this.request.query && this.request.query.email)
             default_email = this.request.query.email;
         const body = renderToString(
-            <div className="App">
-                <MiniHeader />
-                <br />
-                <div className="row" style={{ maxWidth: "32rem" }}>
-                    <div className="column">
-                        <Progress tabIndex="0" value={50} max={100} />
-                        <form id="submit_email" action="/submit_email" method="POST">
-                            <h4 style={{ color: "#4078c0" }}>
+          <div className="App">
+            <MiniHeader />
+            <br />
+            <div className="row" style={{ maxWidth: "32rem" }}>
+              <div className="column">
+                <Progress tabIndex="0" value={50} max={100} />
+                <form id="submit_email" action="/submit_email" method="POST">
+                  <h4 style={{ color: "#4078c0" }}>
                                 Please provide your email address to continue
                             </h4>
-                            <p className="secondary">
+                  <p className="secondary">
                                 We need your email address to ensure that we can contact you to verify account ownership in the event that your account is ever compromised.
                             </p>
-                            <p className="secondary">Please make sure that you enter a <strong>valid</strong> email so that you receive the confirmation link.</p>
-                            <input
-                                type="hidden"
-                                name="csrf"
-                                value={this.csrf}
+                  <p className="secondary">Please make sure that you enter a <strong>valid</strong> email so that you receive the confirmation link.</p>
+                  <input
+                      type="hidden"
+                      name="csrf"
+                      value={this.csrf}
                             />
-                            <input
-                                type="hidden"
-                                name="account"
-                                value={picked_account_name}
+                  <input
+                      type="hidden"
+                      name="account"
+                      value={picked_account_name}
                             />
-                            <label>
+                  <label htmlFor="submit_email">
                                 Email
                                 <input
                                     type="email"
                                     name="email"
                                     defaultValue={default_email}
                                 />
-                            </label>
-                            <br />
-                            <div className="error">
-                                {this.flash.error}
-                            </div>
-                            {rc_site_key ? <button
-                                className="button g-recaptcha"
-                                data-sitekey={rc_site_key}
-                                data-callback="submit_email_form">
+                  </label>
+                  <br />
+                  <div className="error">
+                    {this.flash.error}
+                  </div>
+                  {rc_site_key ? <button
+                      className="button g-recaptcha"
+                      data-sitekey={rc_site_key}
+                      data-callback="submit_email_form">
                                 CONTINUE
                             </button> :
-                                <input
-                                    type="submit"
-                                    className="button"
-                                    value="CONTINUE" />
+                  <input
+                      type="submit"
+                      className="button"
+                      value="CONTINUE" />
                             }
-                        </form>
-                    </div>
-                </div>
+                </form>
+              </div>
             </div>
+          </div>
         );
         const props = { body, title: "Email Address", assets, meta: [] };
         this.body = "<!DOCTYPE html>" +
@@ -238,7 +239,7 @@ export default function useEnterAndConfirmEmailPages(app) {
             mixpanel.track("SignupStepEmail", { distinct_id: this.session.uid });
     });
 
-    router.post("/submit_email", koaBody, function*() {
+    router.post("/submit_email", koaBody, function* () {
         if (!checkCSRF(this, this.request.body.csrf)) return;
 
         let {email, account} = this.request.body;
@@ -313,7 +314,7 @@ export default function useEnterAndConfirmEmailPages(app) {
                 this.session.user = user.id;
             }
             // create referer attribute
-            let user_att = yield models.UserAttribute.findOne({ attributes: ['user_id', 'type_of'], where: { user_id: user.id, type_of: 'referer' }});
+            const user_att = yield models.UserAttribute.findOne({ attributes: ['user_id', 'type_of'], where: { user_id: user.id, type_of: 'referer' }});
             if (!user_att && this.session.r) {
                 yield models.UserAttribute.create({
                     user_id: user.id,
@@ -322,7 +323,7 @@ export default function useEnterAndConfirmEmailPages(app) {
                 });
             }
 
-            let confirmation_code = secureRandom.randomBuffer(13).toString("hex");
+            const confirmation_code = secureRandom.randomBuffer(13).toString("hex");
             // create identity
             yield models.Identity.create({
                 user_id: user.id,
@@ -368,7 +369,7 @@ export default function useEnterAndConfirmEmailPages(app) {
 
     router.get("/confirm_email/:code", confirmEmailHandler);
     router.post("/confirm_email", koaBody, confirmEmailHandler);
-    router.get("/enter_email/submit_form.js", function*() {
+    router.get("/enter_email/submit_form.js", function* () {
         this.type = 'application/javascript';
         this.body = "function submit_email_form(){document.getElementById('submit_email').submit()}";
     });

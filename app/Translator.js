@@ -23,6 +23,7 @@ import ruLocaleData from 'react-intl/locale-data/ru';
 import frLocaleData from 'react-intl/locale-data/fr';
 import esLocaleData from 'react-intl/locale-data/es';
 import itLocaleData from 'react-intl/locale-data/it';
+
 addLocaleData([...enLocaleData, ...ruLocaleData, ...frLocaleData, ...esLocaleData, ...itLocaleData]);
 
 // Our translated strings
@@ -31,6 +32,7 @@ import { en } from './locales/en';
 import { fr } from './locales/fr';
 import { es } from './locales/es';
 import { it } from './locales/it';
+
 const messages = {ru, en, fr, es, it}
 
 /*
@@ -43,7 +45,7 @@ const messages = {ru, en, fr, es, it}
 	this placeholder is needed for usage outside of react. In server side code and in static html files.
 	This function is very simple, it does NOT support dynamic values (for example: translate('your_email_is', {email: 'x@y.com'})). Use it carefully
 */
-let translate = string => {
+let translate = (string) => {
 	let language = DEFAULT_LANGUAGE
 	if (process.env.BROWSER) language = store.get('language') || DEFAULT_LANGUAGE
 	return messages[language][string]
@@ -62,7 +64,6 @@ let translateNumber = () => {};
 
 @injectIntl // inject translation functions through 'intl' prop
 class DummyComponentToExportProps extends React.Component {
-
 	render() { // render hidden placeholder
 		return <span hidden>{' '}</span>
 	}
@@ -113,7 +114,7 @@ class Translator extends React.Component {
 	render() {
         /* LANGUAGE PICKER */
 
-		let language = this.props.locale; //  usually 'en'
+		const language = this.props.locale; //  usually 'en'
 		/*
 			logic: if user has not picked language (storred in LocalStorage),
 			pick browsers language,
@@ -140,21 +141,21 @@ class Translator extends React.Component {
 		// 	}
 		// }
 
-		return 	<IntlProvider
+		return 	(<IntlProvider
 					// to ensure dynamic language change, "key" property with same "locale" info must be added
 					// see: https://github.com/yahoo/react-intl/wiki/Components#multiple-intl-contexts
-					key={language}
-					locale={language}
-					messages={messages[language]}
-					defaultLocale={DEFAULT_LANGUAGE}
+    key={language}
+    locale={language}
+    messages={messages[language]}
+    defaultLocale={DEFAULT_LANGUAGE}
 				>
-					<div>
-						{/* self explanatory */}
-						<DummyComponentToExportProps />
-						{/* render actual content */}
-						{this.props.children}
-					</div>
-				</IntlProvider>
+  <div>
+    {/* self explanatory */}
+    <DummyComponentToExportProps />
+    {/* render actual content */}
+    {this.props.children}
+  </div>
+				</IntlProvider>)
 	}
 }
 

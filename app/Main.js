@@ -9,7 +9,7 @@ import ConsoleExports from './utils/ConsoleExports';
 import {serverApiRecordEvent} from 'app/utils/ServerApiClient';
 import * as steem from 'steem';
 
-window.onerror = error => {
+window.onerror = (error) => {
     if (window.$STM_csrf) serverApiRecordEvent('client_error', error);
 };
 
@@ -38,7 +38,7 @@ function runApp(initial_state) {
 
     const location = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     universalRender({history, location, initial_state})
-    .catch(error => {
+    .catch((error) => {
         console.error(error);
         serverApiRecordEvent('client_error', error);
     });

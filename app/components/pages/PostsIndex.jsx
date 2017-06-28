@@ -13,7 +13,6 @@ import Immutable from "immutable";
 import Callout from 'app/components/elements/Callout';
 
 class PostsIndex extends React.Component {
-
     static propTypes = {
         discussions: PropTypes.object,
         accounts: PropTypes.object,
@@ -75,13 +74,13 @@ class PostsIndex extends React.Component {
             posts = this.props.accounts.getIn([account_name, 'feed']);
             const isMyAccount = this.props.username === account_name;
             if (isMyAccount) {
-                emptyText = <div>
-                    {translate('empty_feed_1')}.<br /><br />
-                    {translate('empty_feed_2')}.<br /><br />
-                    <Link to="/trending">{translate('empty_feed_3')}</Link><br />
-                    <Link to="/welcome">{translate('empty_feed_4')}</Link><br />
-                    <Link to="/faq.html">{translate('empty_feed_5')}</Link><br />
-                </div>;
+                emptyText = (<div>
+                  {translate('empty_feed_1')}.<br /><br />
+                  {translate('empty_feed_2')}.<br /><br />
+                  <Link to="/trending">{translate('empty_feed_3')}</Link><br />
+                  <Link to="/welcome">{translate('empty_feed_4')}</Link><br />
+                  <Link to="/faq.html">{translate('empty_feed_5')}</Link><br />
+                </div>);
                 markNotificationRead = <MarkNotificationRead fields="feed" account={account_name} />
             } else {
                 emptyText = <div>{translate('user_hasnt_followed_anything_yet', {name: account_name})}</div>;
@@ -89,7 +88,7 @@ class PostsIndex extends React.Component {
         } else {
             posts = this.getPosts(order, category);
             if (posts && posts.size === 0) {
-                emptyText = <div>{`No ` + topics_order + (category ? ` #` + category : '') +  ` posts found`}</div>;
+                emptyText = <div>{`No ` + topics_order + (category ? ` #` + category : '') + ` posts found`}</div>;
             }
         }
 
@@ -98,27 +97,27 @@ class PostsIndex extends React.Component {
         const {showSpam} = this.state;
 
         return (
-            <div className={'PostsIndex row' + (fetching ? ' fetching' : '')}>
-                <div className="PostsIndex__left column small-collapse">
-                    <div className="PostsIndex__topics_compact show-for-small hide-for-large">
-                        <Topics order={topics_order} current={category} compact />
-                    </div>
-                    {markNotificationRead}
-                    {(!fetching && (posts && !posts.size)) ? <Callout>{emptyText}</Callout> :
-                        <PostsList
-                            ref="list"
-                            posts={posts ? posts : Immutable.List()}
-                            loading={fetching}
-                            category={category}
-                            loadMore={this.loadMore}
-                            showSpam={showSpam}
+          <div className={'PostsIndex row' + (fetching ? ' fetching' : '')}>
+            <div className="PostsIndex__left column small-collapse">
+              <div className="PostsIndex__topics_compact show-for-small hide-for-large">
+                <Topics order={topics_order} current={category} compact />
+              </div>
+              {markNotificationRead}
+              {(!fetching && (posts && !posts.size)) ? <Callout>{emptyText}</Callout> :
+              <PostsList
+                  ref="list"
+                  posts={posts ? posts : Immutable.List()}
+                  loading={fetching}
+                  category={category}
+                  loadMore={this.loadMore}
+                  showSpam={showSpam}
                         />}
-                </div>
-                <div className="PostsIndex__topics column shrink show-for-large">
-                    <Topics order={topics_order} current={category} compact={false} />
-                    <small><a onClick={this.onShowSpam}>{translate(showSpam ? 'show_less' : 'show_more')}</a>{' ' + translate('value_posts')}</small>
-                </div>
             </div>
+            <div className="PostsIndex__topics column shrink show-for-large">
+              <Topics order={topics_order} current={category} compact={false} />
+              <small><a onClick={this.onShowSpam}>{translate(showSpam ? 'show_less' : 'show_more')}</a>{' ' + translate('value_posts')}</small>
+            </div>
+          </div>
         );
     }
 }
@@ -137,7 +136,7 @@ module.exports = {
         },
         (dispatch) => {
             return {
-                requestData: (args) => dispatch({type: 'REQUEST_DATA', payload: args}),
+                requestData: args => dispatch({type: 'REQUEST_DATA', payload: args}),
             }
         }
     )(PostsIndex)

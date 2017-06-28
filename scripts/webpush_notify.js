@@ -6,16 +6,16 @@ webPush.setGCMAPIKey(config.get('notify.gcm_key'));
 
 function notify(account, nparams, title, body, url, pic) {
     if (!nparams.keys || !nparams.keys.auth) return Promise.resolve(false);
-     var payload = JSON.stringify({
+     const payload = JSON.stringify({
         title,
         body,
         url,
-        icon: pic || 'https://steemit.com/favicon.ico'  //FIXME domain name from config
+        icon: pic || 'https://steemit.com/favicon.ico' //FIXME domain name from config
     });
     return new Promise((resolve, reject) => {
-        webPush.sendNotification(nparams, payload).then(function() {
+        webPush.sendNotification(nparams, payload).then(() => {
             resolve(account);
-        }, function(err) {
+        }, (err) => {
             reject(err);
         });
     });

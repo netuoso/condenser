@@ -10,7 +10,7 @@ const request = agent(server.listen());
 
 chai.use(dirtyChai);
 
-describe('/favicon.ico', function () {
+describe('/favicon.ico', () => {
 /* not maintained
     it('should return image', function *() {
         const res = yield request.get('/favicon.ico').end();

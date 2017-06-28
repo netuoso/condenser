@@ -5,6 +5,7 @@ import baseConfig from './base.config';
 import startKoa from './utils/start-koa';
 
 const LOCAL_IP = require('dev-ip')();
+
 const WEBPACK_PORT = process.env.PORT ? parseInt(process.env.PORT)+1 : 8081;
 const HOST = (isArray(LOCAL_IP) && LOCAL_IP[0]) || LOCAL_IP || 'localhost';
 const PUBLIC_PATH = "/assets/";
@@ -53,7 +54,7 @@ export default {
                     VERSION: JSON.stringify(git.tag())
                 },
                 global: {
-                    'TYPED_ARRAY_SUPPORT': JSON.stringify(false)
+                    TYPED_ARRAY_SUPPORT: JSON.stringify(false)
                 }
             }),
             new webpack.optimize.DedupePlugin(),

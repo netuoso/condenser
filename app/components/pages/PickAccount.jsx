@@ -10,7 +10,6 @@ import Progress from 'react-foundation-components/lib/global/progress-bar';
 import { Link } from 'react-router';
 
 class PickAccount extends React.Component {
-
     static propTypes = {
         loginUser: React.PropTypes.func.isRequired,
         serverBusy: React.PropTypes.bool
@@ -68,7 +67,7 @@ class PickAccount extends React.Component {
             name_error = validate_account_name(name);
             if (!name_error) {
                 this.setState({name_error: ''});
-                promise = api.getAccountsAsync([name]).then(res => {
+                promise = api.getAccountsAsync([name]).then((res) => {
                     return res && res.length > 0 ? 'Account name is not available' : '';
                 });
             }
@@ -86,11 +85,11 @@ class PickAccount extends React.Component {
 
     render() {
         if (!process.env.BROWSER) { // don't render this page on the server
-            return <div className="row">
-                <div className="column">
-                    <p className="text-center">LOADING..</p>
-                </div>
-            </div>;
+            return (<div className="row">
+              <div className="column">
+                <p className="text-center">LOADING..</p>
+              </div>
+            </div>);
         }
 
         const {
@@ -104,61 +103,61 @@ class PickAccount extends React.Component {
         const account_status = offchainUser ? offchainUser.get('account_status') : null;
 
         if (serverBusy || $STM_Config.disable_signups) {
-            return <div className="row">
-                <div className="column">
-                    <div className="callout alert">
-                        <p>Membership to Steemit.com is now under invitation only because of unexpectedly high sign up rate.</p>
-                    </div>
+            return (<div className="row">
+              <div className="column">
+                <div className="callout alert">
+                  <p>Membership to Steemit.com is now under invitation only because of unexpectedly high sign up rate.</p>
                 </div>
-            </div>;
+              </div>
+            </div>);
         }
         if (cryptographyFailure) {
-            return <div className="row">
-                <div className="column">
-                    <div className="callout alert">
-                        <h4>Cryptography test failed</h4>
-                        <p>We will be unable to create your Steem account with this browser.</p>
-                        <p>The latest versions of <a href="https://www.google.com/chrome/">Chrome</a> and <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>
+            return (<div className="row">
+              <div className="column">
+                <div className="callout alert">
+                  <h4>Cryptography test failed</h4>
+                  <p>We will be unable to create your Steem account with this browser.</p>
+                  <p>The latest versions of <a href="https://www.google.com/chrome/">Chrome</a> and <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>
                             are well tested and known to work with steemit.com.</p>
-                    </div>
                 </div>
-            </div>;
+              </div>
+            </div>);
         }
 
         if (loggedIn) {
-            return <div className="row">
-                <div className="column">
-                    <div className="callout alert">
-                        <p>You need to <a href="#" onClick={logout}>Logout</a> before you can create another account.</p>
-                        <p>Please note that Steemit can only register one account per verified user.</p>
-                    </div>
+            return (<div className="row">
+              <div className="column">
+                <div className="callout alert">
+                  <p>You need to <a href="#" onClick={logout}>Logout</a> before you can create another account.</p>
+                  <p>Please note that Steemit can only register one account per verified user.</p>
                 </div>
-            </div>;
+              </div>
+            </div>);
         }
 
         if (account_status === 'waiting') {
-            return <div className="row">
-                <div className="column">
-                    <br />
-                    <div className="callout alert">
-                        <p>Your sign up request is not confirmed yet, we will send you a confirmation email as soon as we process it.</p>
-                        <p>It usually takes up to one business day to process a request, please be patient.</p>
-                        <p>Drop us a <a href="mailto:support@steemit.com?subject=Sign Up">message</a> if it takes longer or you need to sign up sooner.</p>
-                    </div>
+            return (<div className="row">
+              <div className="column">
+                <br />
+                <div className="callout alert">
+                  <p>Your sign up request is not confirmed yet, we will send you a confirmation email as soon as we process it.</p>
+                  <p>It usually takes up to one business day to process a request, please be patient.</p>
+                  <p>Drop us a <a href="mailto:support@steemit.com?subject=Sign Up">message</a> if it takes longer or you need to sign up sooner.</p>
                 </div>
-            </div>;
+              </div>
+            </div>);
         }
 
         if (account_status === 'approved') {
-            return <div className="row">
-                <div className="column">
-                    <br />
-                    <div className="callout success">
-                        <p>Congratulations! Your sign up request has been approved.</p>
-                        <p><Link to="/create_account">Proceed to Create Account Form</Link></p>
-                    </div>
+            return (<div className="row">
+              <div className="column">
+                <br />
+                <div className="callout success">
+                  <p>Congratulations! Your sign up request has been approved.</p>
+                  <p><Link to="/create_account">Proceed to Create Account Form</Link></p>
                 </div>
-            </div>;
+              </div>
+            </div>);
         }
 
         // const existingUserAccount = offchainUser.get('account');
@@ -178,46 +177,46 @@ class PickAccount extends React.Component {
         let next_step = null;
         if (server_error) {
             if (server_error === 'Email address is not confirmed') {
-                next_step = <div className="callout alert">
-                    <a href="/enter_email">Please verify your email address</a>
-                </div>;
+                next_step = (<div className="callout alert">
+                  <a href="/enter_email">Please verify your email address</a>
+                </div>);
             } else if (server_error === 'Phone number is not confirmed') {
-                next_step = <div className="callout alert">
-                    <a href="/enter_mobile">Please verify your phone number</a>
-                </div>;
+                next_step = (<div className="callout alert">
+                  <a href="/enter_mobile">Please verify your phone number</a>
+                </div>);
             } else {
-                next_step = <div className="callout alert">
-                    <h5>Couldn't create account. Server returned the following error:</h5>
-                    <p>{server_error}</p>
-                </div>;
+                next_step = (<div className="callout alert">
+                  <h5>Couldn't create account. Server returned the following error:</h5>
+                  <p>{server_error}</p>
+                </div>);
             }
         }
 
         return (
-            <div>
-                <div className="CreateAccount row">
-                    <div className="column" style={{maxWidth: '36rem', margin: '0 auto'}}>
-                        <br />
-                        <Progress tabIndex="0" value={10} max={100} />
-                        <br />
-                        <h4 style={{ color: "#4078c0" }}>Welcome to Steemit</h4>
-                        <div className="secondary">
-                             <p>Your account name is how you will be known on Steemit.<br />
-                                 {/*Your account name <strong>can never be changed</strong>, so please choose carefully.*/}</p>
-                        </div>
-                        <form onSubmit={this.onSubmit} autoComplete="off" noValidate method="post">
-                            <div className={name_error ? 'error' : ''}>
-                                <label>ACCOUNT NAME</label>
-                                <input type="text" name="name" autoComplete="off" onChange={this.onNameChange} value={name} placeholder={"Name..."} />
-                                <p>{name_error}</p>
-                            </div>
-                            <input disabled={submit_btn_disabled} type="submit" className={submit_btn_class} value="CONTINUE" />
-                        </form>
-                        <br />
-                        <p className="secondary">Already have account? <Link to="/login.html">Login</Link></p>
-                    </div>
+          <div>
+            <div className="CreateAccount row">
+              <div className="column" style={{maxWidth: '36rem', margin: '0 auto'}}>
+                <br />
+                <Progress tabIndex="0" value={10} max={100} />
+                <br />
+                <h4 style={{ color: "#4078c0" }}>Welcome to Steemit</h4>
+                <div className="secondary">
+                  <p>Your account name is how you will be known on Steemit.<br />
+                    {/*Your account name <strong>can never be changed</strong>, so please choose carefully.*/}</p>
                 </div>
+                <form onSubmit={this.onSubmit} autoComplete="off" noValidate method="post">
+                  <div className={name_error ? 'error' : ''}>
+                    <label>ACCOUNT NAME</label>
+                    <input type="text" name="name" autoComplete="off" onChange={this.onNameChange} value={name} placeholder={"Name..."} />
+                    <p>{name_error}</p>
+                  </div>
+                  <input disabled={submit_btn_disabled} type="submit" className={submit_btn_class} value="CONTINUE" />
+                </form>
+                <br />
+                <p className="secondary">Already have account? <Link to="/login.html">Login</Link></p>
+              </div>
             </div>
+          </div>
         );
     }
 }
@@ -225,7 +224,7 @@ class PickAccount extends React.Component {
 module.exports = {
     path: 'pick_account',
     component: connect(
-        state => {
+        (state) => {
             return {
                 loggedIn: !!state.user.get('current'),
                 offchainUser: state.offchain.get('user'),
@@ -234,7 +233,7 @@ module.exports = {
         },
         dispatch => ({
             loginUser: (username, password) => dispatch(user.actions.usernamePasswordLogin({username, password, saveLogin: true})),
-            logout: e => {
+            logout: (e) => {
                 if (e) e.preventDefault();
                 dispatch(user.actions.logout())
             }

@@ -36,30 +36,30 @@ class Topics extends React.Component {
         const currentValue = `/${order}/${current}`;
 
         if (compact) {
-            return <select className={cn} onChange={(e) => browserHistory.push(e.target.value)} value={currentValue}>
-                <option key={'*'} value={'/' + order}>Topics...</option>
-                {categories.map(cat => {
+            return (<select className={cn} onChange={e => browserHistory.push(e.target.value)} value={currentValue}>
+              <option key={'*'} value={'/' + order}>Topics...</option>
+              {categories.map((cat) => {
                     const link = order ? `/${order}/${cat}` : `/${cat}`;
                     return <option key={cat} value={link}>{cat}</option>
                 })}
-            </select>;
+            </select>);
         }
 
-        categories = categories.map(cat => {
+        categories = categories.map((cat) => {
             const link = order ? `/${order}/${cat}` : `/hot/${cat}`;
             return (<li key={cat}>
-                        <Link to={link} activeClassName="active">{cat}</Link>
-                    </li>);
+              <Link to={link} activeClassName="active">{cat}</Link>
+            </li>);
         });
         return (
-            <ul className={cn}>
-                <li className="Topics__title" key={'*'}>Tags and Topics</li>
-                <hr />
-               {categories}
-               <li className="show-more">
-                   <Link to={`/tags`}>Show more topics..</Link>
-               </li>
-            </ul>
+          <ul className={cn}>
+            <li className="Topics__title" key={'*'}>Tags and Topics</li>
+            <hr />
+            {categories}
+            <li className="show-more">
+              <Link to={`/tags`}>Show more topics..</Link>
+            </li>
+          </ul>
         );
     }
 }

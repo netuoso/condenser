@@ -5,18 +5,18 @@ import { translate } from 'app/Translator';
 class Login extends React.Component {
     render() {
         if (!process.env.BROWSER) { // don't render this page on the server
-            return <div className="row">
-                <div className="column">
-                    {translate('loading')}..
+            return (<div className="row">
+              <div className="column">
+                {translate('loading')}..
                 </div>
-            </div>;
+            </div>);
         }
         return (
-            <div className="Login row">
-                <div className="column">
-                    <LoginForm afterLoginRedirectToWelcome />
-                </div>
+          <div className="Login row">
+            <div className="column">
+              <LoginForm afterLoginRedirectToWelcome />
             </div>
+          </div>
         );
     }
 }

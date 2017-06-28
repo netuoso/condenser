@@ -1,4 +1,5 @@
-var fs = require('fs');
+const fs = require('fs');
+
 if(!fs.existsSync('tmp'))
     fs.mkdirSync('tmp');
 

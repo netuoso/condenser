@@ -299,9 +299,9 @@ class App extends React.Component {
                 {children}
                 {lp ? <LpFooter /> : null}
             </div>
-            <Dialogs />
-            <Modals />
-            <PageViewsCounter />
+          <Dialogs />
+          <Modals />
+          <PageViewsCounter />
         </div>
     }
 }
