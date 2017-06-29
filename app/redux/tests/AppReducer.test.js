@@ -4,6 +4,7 @@ import dirtyChai from 'dirty-chai';
 import chaiImmutable from 'chai-immutable';
 import {Map} from 'immutable';
 import reducer from '../AppReducer';
+
 chai.use(dirtyChai);
 chai.use(chaiImmutable);
 
@@ -42,7 +43,7 @@ describe('AppReducer', () => {
 
     it('resolved effect should be added to effects and turn on loading', () => {
         const triggeredState = Map({
-            effects: Map({['1']: Date.now()}),
+            effects: Map({1: Date.now()}),
             loading: true,
             error: ''
         });

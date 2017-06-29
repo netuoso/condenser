@@ -1,15 +1,14 @@
 import React from 'react'
 
 export default class Align extends React.Component {
-
     getAlignClass = () => {
         const {node} = this.props
         switch(node.data.get('align')) {
-            case 'text-right':  return 'text-right';
-            case 'text-left':   return 'text-left';
+            case 'text-right': return 'text-right';
+            case 'text-left': return 'text-left';
             case 'text-center': return 'text-center';
-            case 'pull-right':  return 'pull-right';
-            case 'pull-left':   return 'pull-left';
+            case 'pull-right': return 'pull-right';
+            case 'pull-left': return 'pull-left';
         }
     }
 
@@ -18,9 +17,9 @@ export default class Align extends React.Component {
         const className = this.getAlignClass();
 
         return (
-            <div {...attributes} className={className}>
-                {children}
-            </div>
+          <div {...attributes} className={className}>
+            {children}
+          </div>
         )
     }
 }

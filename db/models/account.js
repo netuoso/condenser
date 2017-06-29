@@ -20,12 +20,12 @@ module.exports = function (sequelize, DataTypes) {
         created: {type: DataTypes.BOOLEAN}
     }, {
         tableName: 'accounts',
-        createdAt   : 'created_at',
-        updatedAt   : 'updated_at',
-        timestamps  : true,
-        underscored : true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        timestamps: true,
+        underscored: true,
         classMethods: {
-            associate: function (models) {
+            associate(models) {
                 Account.belongsTo(models.User, {
                     onDelete: "CASCADE",
                     foreignKey: {

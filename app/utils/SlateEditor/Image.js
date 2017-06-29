@@ -66,7 +66,7 @@ class Image extends React.Component {
         if(!file && !dataUrl) return
         this.setState({ progress: {}, uploading: true}, () => {
             const {uploadImage} = this.props
-            uploadImage(file, dataUrl, filename, progress => {
+            uploadImage(file, dataUrl, filename, (progress) => {
                 this.setState({ progress, uploading: false })
                 if(progress.url) {
                     this.setImageSrc(progress.url, filename)
@@ -96,22 +96,22 @@ class Image extends React.Component {
 
         const {uploading} = this.state
         if(uploading)
-            return <div {...attributes}>
-                {img}
-                <br />
-                <small className="info">Uploading Image&hellip;</small>
-            </div>
+            return (<div {...attributes}>
+              {img}
+              <br />
+              <small className="info">Uploading Image&hellip;</small>
+            </div>)
 
         const { error } = this.state.progress
-        return <div {...attributes}>
-            {img}
-            <div className="error">
-                <small>
+        return (<div {...attributes}>
+          {img}
+          <div className="error">
+            <small>
                     Image was not Saved (<a onClick={this.load}>retry</a>)
                     <br />
-                    {error}
-                </small>
-            </div>
-        </div>
+              {error}
+            </small>
+          </div>
+        </div>)
     }
 })

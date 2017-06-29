@@ -6,7 +6,7 @@ function findByProvider(provider_user_id, resolve) {
         attributes: ['user_id'],
         where: {provider_user_id}
     };
-    models.Identity.findOne(query).then(identity => {
+    models.Identity.findOne(query).then((identity) => {
         if (identity) {
             models.User.findOne({
                 attributes: ['id'],
@@ -20,7 +20,7 @@ function findByProvider(provider_user_id, resolve) {
 
 export default function findUser({user_id, email, uid, provider_user_id}) {
     console.log('-- findUser  -->', user_id, email, uid, provider_user_id);
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         let query;
         const where_or = [];
         if (user_id) where_or.push({id: user_id});
@@ -32,7 +32,7 @@ export default function findUser({user_id, email, uid, provider_user_id}) {
                 where: {$or: where_or}
             };
             console.log('-- findUser query -->', query);
-            models.User.findOne(query).then(user => {
+            models.User.findOne(query).then((user) => {
                 if (user) resolve(user);
                 else {
                     findByProvider(provider_user_id, resolve);

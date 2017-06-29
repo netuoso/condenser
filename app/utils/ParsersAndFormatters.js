@@ -43,7 +43,7 @@ function log10(str) {
     return n + (log - parseInt(log));
 }
 
-export const repLog10 = rep2 => {
+export const repLog10 = (rep2) => {
     if(rep2 == null) return rep2
     let rep = String(rep2)
     const neg = rep.charAt(0) === '-'
@@ -68,7 +68,7 @@ export function countDecimals(amount) {
 
 // this function searches for right translation of provided error (usually from back-end)
 export function translateError(string) {
-    if (typeof(string) != 'string') return string;
+    if (typeof (string) != 'string') return string;
     switch (string) {
         case 'Account not found':
             return translate('account_not_found');

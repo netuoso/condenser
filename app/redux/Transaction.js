@@ -24,13 +24,14 @@ export default createModule({
                 })
             }
         },
-        { action: 'HIDE_CONFIRM', reducer: state =>
+        { action: 'HIDE_CONFIRM',
+reducer: state =>
             state.merge({show_confirm_modal: false, confirmBroadcastOperation: undefined, confirm: undefined})
         },
         {
             // An error will end up in QUEUE
             action: 'BROADCAST_OPERATION',
-            reducer: (state) => {//, {payload: {type, operation, keys}}
+            reducer: (state) => { //, {payload: {type, operation, keys}}
                 // See TransactionSaga.js
                 return state
             },
@@ -38,12 +39,12 @@ export default createModule({
         {
             // An error will end up in QUEUE
             action: 'UPDATE_AUTHORITIES',
-            reducer: (state) => state,
+            reducer: state => state,
         },
         {
             // An error will end up in QUEUE
             action: 'UPDATE_META',
-            reducer: (state) => state,
+            reducer: state => state,
         },
         {
             action: 'ERROR',
@@ -103,7 +104,7 @@ export default createModule({
                             errorKey = "Not your valid active key.";
                             errorStr = "Transaction failed: Not your valid active key.";
                         }
-                        state = state.update('errors', errors => {
+                        state = state.update('errors', (errors) => {
                             return errors ? errors.set(errorKey, errorStr) : Map({[errorKey]: errorStr});
                         });
                     }

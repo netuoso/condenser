@@ -72,7 +72,7 @@ class ShowKey extends Component {
 
 
         const keyLink = wif ?
-            <div style={{marginBottom: 0}} className="hollow tiny button slim"><a onClick={onShow}>{show ? keyIcon : showTip}</a></div> :
+          <div style={{marginBottom: 0}} className="hollow tiny button slim"><a onClick={onShow}>{show ? keyIcon : showTip}</a></div> :
             authType === 'memo' ? null :
             authType === 'owner' ? null :
 
@@ -80,17 +80,17 @@ class ShowKey extends Component {
 
 
         return (<div className="row">
-            <div className="column small-12 medium-10">
-                <div style={{display: "inline-block", paddingRight: 10, cursor: "pointer"}} onClick={this.showQr}>
-                    <img src={require("app/assets/images/qrcode.png")} height="40" width="40" />
-                </div>
-                {/* Keep this as wide as possible, check print preview makes sure WIF it not cut off */}
-                <span {...cmpProps}>{show ? wif : pubkey}</span>
+          <div className="column small-12 medium-10">
+            <div style={{display: "inline-block", paddingRight: 10, cursor: "pointer"}} onClick={this.showQr}>
+              <img src={require("app/assets/images/qrcode.png")} height="40" width="40" />
             </div>
-            <div className="column small-12 medium-2 noPrint">
-                {keyLink}
-            </div>
-            {/*<div className="column small-1">
+            {/* Keep this as wide as possible, check print preview makes sure WIF it not cut off */}
+            <span {...cmpProps}>{show ? wif : pubkey}</span>
+          </div>
+          <div className="column small-12 medium-2 noPrint">
+            {keyLink}
+          </div>
+          {/*<div className="column small-1">
                 {children}
             </div>*/}
         </div>)

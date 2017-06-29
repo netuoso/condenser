@@ -14,8 +14,7 @@ function truncate(str, len) {
  * Enforce profile data length & format standards.
  */
 export default function normalizeProfile(account) {
-
-    if(! account) return {}
+    if(!account) return {}
 
     // Parse
     let profile = {};

@@ -1,5 +1,6 @@
 import {roundDown, roundUp} from "./MarketUtils";
 import { LIQUID_TICKER, DEBT_TICKER } from 'app/client_config'
+
 const precision = 1000;
 
 class Order {
@@ -56,12 +57,11 @@ class Order {
 }
 
 class TradeHistory {
-
     constructor(fill) {
         // Norm date (FF bug)
-        var zdate = fill.date;
+        let zdate = fill.date;
         if(!/Z$/.test(zdate))
-          zdate = zdate + 'Z'
+          zdate += 'Z'
 
         this.date = new Date(zdate);
         this.type = fill.current_pays.indexOf(DEBT_TICKER) !== -1 ? "bid" : "ask";

@@ -18,12 +18,12 @@ module.exports = function (sequelize, DataTypes) {
         score: DataTypes.INTEGER
     }, {
         tableName: 'identities',
-        createdAt   : 'created_at',
-        updatedAt   : 'updated_at',
-        timestamps  : true,
-        underscored : true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        timestamps: true,
+        underscored: true,
         classMethods: {
-            associate: function (models) {
+            associate(models) {
                 Identity.belongsTo(models.User, {
                     onDelete: "CASCADE",
                     foreignKey: {

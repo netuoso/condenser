@@ -16,7 +16,7 @@ export default function reactForm({name, instance, fields, initialValues, valida
     const formState = instance.state = instance.state || {}
     formState[name] = {
         // validate: () => setFormState(instance, fields, validation),
-        handleSubmit: submitCallback => event => {
+        handleSubmit: submitCallback => (event) => {
             event.preventDefault()
             const {valid} = setFormState(name, instance, fields, validation)
             if(!valid) return
@@ -96,7 +96,7 @@ export default function reactForm({name, instance, fields, initialValues, valida
             }
         }
 
-        fs.props.onChange = e => {
+        fs.props.onChange = (e) => {
             const value = e && e.target ? e.target.value : e // API may pass value directly
             const v = {...(instance.state[fieldName] || {})}
             const initialValue = initialValues[fieldName]
@@ -115,7 +115,7 @@ export default function reactForm({name, instance, fields, initialValues, valida
 
             instance.setState(
                 {[fieldName]: v},
-                () => {setFormState(name, instance, fields, validation)}
+                () => { setFormState(name, instance, fields, validation) }
             )
         }
 

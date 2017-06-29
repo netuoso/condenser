@@ -43,7 +43,7 @@ export default function reducer(state = defaultState, action) {
             dismissAfter: 10000,
             ...action.payload
         };
-        res = res.update('notifications', s => {
+        res = res.update('notifications', (s) => {
             return s ? s.set(n.key, n) : OrderedMap({[n.key]: n});
         });
     }

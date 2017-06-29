@@ -1,4 +1,4 @@
-Aimport React from 'react';
+import React from 'react';
 // import ReactMarkdown from 'react-markdown';
 import Comment from 'app/components/cards/Comment';
 import PostFull from 'app/components/cards/PostFull';
@@ -74,15 +74,15 @@ class Post extends React.Component {
             if(gray) {
                 return (
                   <div className="Post">
-                      <div className="row">
-                          <div className="column">
-                              <div className="PostFull">
-                                  <p onClick={this.showAnywayClick}>{translate('this_post_was_hidden_due_to_low_ratings')}.{' '}
-                                      <button style={{marginBottom: 0}} className="button hollow tiny float-right" onClick={this.showAnywayClick}>{translate('show')}</button></p>
-                                </div>
-                            </div>
+                    <div className="row">
+                      <div className="column">
+                        <div className="PostFull">
+                          <p onClick={this.showAnywayClick}>{translate('this_post_was_hidden_due_to_low_ratings')}.{' '}
+                            <button style={{marginBottom: 0}} className="button hollow tiny float-right" onClick={this.showAnywayClick}>{translate('show')}</button></p>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 )
             }
         }
@@ -97,24 +97,24 @@ class Post extends React.Component {
         const positiveComments = replies
             .map(reply => (
               <Comment
-                    root
-                    key={post + reply}
-                    content={reply}
-                    cont={content}
-                    sort_order={sort_order}
-                    showNegativeComments={showNegativeComments}
-                    onHide={this.onHideComment}
+                  root
+                  key={post + reply}
+                  content={reply}
+                  cont={content}
+                  sort_order={sort_order}
+                  showNegativeComments={showNegativeComments}
+                  onHide={this.onHideComment}
                 />)
             );
 
         const negativeGroup = commentHidden &&
             (<div className="hentry Comment root Comment__negative_group">
               <p>
-                  {translate(showNegativeComments ? 'now_showing_comments_with_low_ratings' : 'comments_were_hidden_due_to_low_ratings')}.{' '}
-                  <button className="button hollow tiny float-right" onClick={e => this.toggleNegativeReplies(e)}>
-                      {translate(showNegativeComments ? 'hide' :'show')}
-                    </button>
-                </p>
+                {translate(showNegativeComments ? 'now_showing_comments_with_low_ratings' : 'comments_were_hidden_due_to_low_ratings')}.{' '}
+                <button className="button hollow tiny float-right" onClick={e => this.toggleNegativeReplies(e)}>
+                  {translate(showNegativeComments ? 'hide' :'show')}
+                </button>
+              </p>
             </div>);
 
 
@@ -135,55 +135,55 @@ class Post extends React.Component {
         const emptyPost = dis.get('created') === '1970-01-01T00:00:00' && dis.get('body') === ''
         if(emptyPost)
             return (<center>
-                <div className="NotFound float-center">
-                    <div>
-                        <h4 className="NotFound__header">Sorry! This page doesn't exist.</h4>
-                        <p>Not to worry. You can head back to <a style={{fontWeight: 800}} href="/">our homepage</a>,
+              <div className="NotFound float-center">
+                <div>
+                  <h4 className="NotFound__header">Sorry! This page doesn't exist.</h4>
+                  <p>Not to worry. You can head back to <a style={{fontWeight: 800}} href="/">our homepage</a>,
                             or check out some great posts.
                         </p>
-                        <ul className="NotFound__menu">
-                            <li><a href="/created">new posts</a></li>
-                            <li><a href="/hot">hot posts</a></li>
-                            <li><a href="/trending">trending posts</a></li>
-                            <li><a href="/promoted">promoted posts</a></li>
-                            <li><a href="/active">active posts</a></li>
-                        </ul>
-                    </div>
+                  <ul className="NotFound__menu">
+                    <li><a href="/created">new posts</a></li>
+                    <li><a href="/hot">hot posts</a></li>
+                    <li><a href="/trending">trending posts</a></li>
+                    <li><a href="/promoted">promoted posts</a></li>
+                    <li><a href="/active">active posts</a></li>
+                  </ul>
                 </div>
+              </div>
             </center>)
 
         return (
           <div className="Post">
-              <div className="row">
-                  <div className="column">
-                      <PostFull post={post} cont={content} />
-                    </div>
-                </div>
-              {!current_user && <div className="row">
-                  <div className="column">
-                      <div className="Post__promo">
-                          {translate('authors_get_paid_when_people_like_you_upvote_their_post')}.
+            <div className="row">
+              <div className="column">
+                <PostFull post={post} cont={content} />
+              </div>
+            </div>
+            {!current_user && <div className="row">
+              <div className="column">
+                <div className="Post__promo">
+                  {translate('authors_get_paid_when_people_like_you_upvote_their_post')}.
                             <br /> {// remove '$' from signup_bonus before parsing it into local currency
                                     translate('if_you_enjoyed_what_you_read_earn_amount', {amount: '$'+localizedCurrency(signup_bonus.substring(1))})}
-                          <br />
-                          <button type="button" className="button sign-up" onClick={showSignUp}>Sign up now to receive <span className="free-money">FREE STEEM!</span></button>
-                        </div>
-                    </div>
-                </div>}
-              <div id="comments" className="Post_comments row hfeed">
-                  <div className="column large-12">
-                      <div className="Post_comments__content">
-                          {positiveComments.length ?
+                  <br />
+                  <button type="button" className="button sign-up" onClick={showSignUp}>Sign up now to receive <span className="free-money">FREE STEEM!</span></button>
+                </div>
+              </div>
+            </div>}
+            <div id="comments" className="Post_comments row hfeed">
+              <div className="column large-12">
+                <div className="Post_comments__content">
+                  {positiveComments.length ?
                             (<div className="Post__comments_sort_order float-right">
                               {translate('sort_order')}: &nbsp;
                                 <FoundationDropdownMenu menu={sort_menu} label={sort_label} dropdownPosition="bottom" dropdownAlignment="right" />
                             </div>) : null}
-                          {positiveComments}
-                          {negativeGroup}
-                        </div>
-                    </div>
+                  {positiveComments}
+                  {negativeGroup}
                 </div>
+              </div>
             </div>
+          </div>
         );
     }
 }

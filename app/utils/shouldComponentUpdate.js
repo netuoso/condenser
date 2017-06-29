@@ -31,7 +31,7 @@ export function compare(name, a, b) {
     const aKeys = new Set(a && Object.keys(a))
     const bKeys = new Set(b && Object.keys(b))
     const ab = new Set([...aKeys, ...aKeys])
-    ab.forEach(key => {
+    ab.forEach((key) => {
         const hasA = aKeys.has(key)
         const hasB = bKeys.has(key)
         if (!hasA && !hasB) return

@@ -2,7 +2,6 @@ import React from 'react'
 import linksRe from 'app/utils/Links'
 
 export default class Iframe extends React.Component {
-
     normalizeEmbedUrl = (url) => {
         let match;
 
@@ -49,22 +48,22 @@ export default class Iframe extends React.Component {
 
         const lockStyle = {
             position: 'absolute',
-            top:      '0px',
-            left:     '0px',
-            width:    '100%',
-            height:   '100%',
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            height: '100%',
             background: 'rgba(0,0,0,0.1)',
         }
 
         return (
-            <div {...attributes} className={className}>
-                <div className="videoWrapper">
-                    {this.renderFrame()}
-                    <div style={lockStyle}>
-                        {isFocused && <span>{this.renderInput()}</span>}
-                    </div>
-                </div>
+          <div {...attributes} className={className}>
+            <div className="videoWrapper">
+              {this.renderFrame()}
+              <div style={lockStyle}>
+                {isFocused && <span>{this.renderInput()}</span>}
+              </div>
             </div>
+          </div>
         )
     }
 
@@ -73,7 +72,7 @@ export default class Iframe extends React.Component {
         src = this.normalizeEmbedUrl(src) || src
 
         return (
-            <iframe
+          <iframe
               type="text/html"
               width="640"
               height="360"
@@ -81,7 +80,7 @@ export default class Iframe extends React.Component {
               frameBorder="0"
               webkitallowfullscreen
               mozallowfullscreen
-              allowfullscreen
+              allowFullScreen
             />
         )
     }
@@ -91,18 +90,18 @@ export default class Iframe extends React.Component {
 
         const style = {
             fontFamily: 'Arial',
-            margin:     '200px auto',
-            width:      '90%',
-            padding:    '1rem 0.5rem',
+            margin: '200px auto',
+            width: '90%',
+            padding: '1rem 0.5rem',
             background: 'rgba(255,255,255,0.9)',
-            display:    'block',
-            textAlign:  'center',
-            color:      'black',
+            display: 'block',
+            textAlign: 'center',
+            color: 'black',
             borderRadius: '5px',
         }
 
         return (
-            <input
+          <input
               value={src}
               onChange={this.onChange}
               onClick={this.onClick}

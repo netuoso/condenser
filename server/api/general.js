@@ -20,10 +20,10 @@ export default function useGeneralApi(app) {
     app.use(router.routes());
     const koaBody = koa_body();
 
-    router.post('/accounts_wait', koaBody, function *() {
+    router.post('/accounts_wait', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         const params = this.request.body;
-        const account = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const account = typeof (params) === 'string' ? JSON.parse(params) : params;
         const remote_ip = getRemoteIp(this.req);
         if (!checkCSRF(this, account.csrf)) return;
         console.log('-- /accounts_wait -->', this.session.uid, this.session.user, account);
@@ -39,7 +39,7 @@ export default function useGeneralApi(app) {
                 remote_ip,
                 referrer: this.session.r,
                 created: false
-            })).catch(error => {
+            })).catch((error) => {
                 console.error('!!! Can\'t create account wait model in /accounts api', this.session.uid, error);
         });
             if (mixpanel) {
@@ -56,10 +56,10 @@ export default function useGeneralApi(app) {
         recordWebEvent(this, 'api/accounts_wait', account ? account.name : 'n/a');
     });
 
-    router.post('/accounts', koaBody, function *() {
+    router.post('/accounts', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         const params = this.request.body;
-        const account = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const account = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, account.csrf)) return;
         console.log('-- /accounts -->', this.session.uid, this.session.user, account);
 
@@ -89,7 +89,7 @@ export default function useGeneralApi(app) {
             console.error('-- /accounts tarantool is not available, fallback to another method', e)
             const rnd_wait_time = Math.random() * 10000;
             console.log('-- /accounts rnd_wait_time -->', rnd_wait_time);
-            yield new Promise((resolve) =>
+            yield new Promise(resolve =>
                 setTimeout(() => resolve(), rnd_wait_time)
             )
         }
@@ -179,15 +179,15 @@ export default function useGeneralApi(app) {
         } finally {
             // console.log('-- /accounts unlock_entity -->', user_id);
             // release global lock
-            try { yield Tarantool.instance().call('unlock_entity', user_id + ''); } catch(e) {/* ram lock */}
+            try { yield Tarantool.instance().call('unlock_entity', user_id + ''); } catch(e) { /* ram lock */ }
         }
         recordWebEvent(this, 'api/accounts', account ? account.name : 'n/a');
     });
 
-    router.post('/update_email', koaBody, function *() {
+    router.post('/update_email', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         const params = this.request.body;
-        const {csrf, email} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf, email} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         console.log('-- /update_email -->', this.session.uid, email);
         try {
@@ -209,10 +209,10 @@ export default function useGeneralApi(app) {
         recordWebEvent(this, 'api/update_email', email);
     });
 
-    router.post('/login_account', koaBody, function *() {
+    router.post('/login_account', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         const params = this.request.body;
-        const {csrf, account, signatures} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf, account, signatures} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         console.log('-- /login_account -->', this.session.uid, account);
         try {
@@ -266,10 +266,10 @@ export default function useGeneralApi(app) {
         recordWebEvent(this, 'api/login_account', account);
     });
 
-    router.post('/logout_account', koaBody, function *() {
+    router.post('/logout_account', koaBody, function* () {
         // if (rateLimitReq(this, this.req)) return; - logout maybe immediately followed with login_attempt event
         const params = this.request.body;
-        const {csrf} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         console.log('-- /logout_account -->', this.session.uid);
         try {
@@ -282,11 +282,11 @@ export default function useGeneralApi(app) {
         }
     });
 
-    router.post('/record_event', koaBody, function *() {
+    router.post('/record_event', koaBody, function* () {
         if (rateLimitReq(this, this.req)) return;
         try {
             const params = this.request.body;
-            const {csrf, type, value} = typeof(params) === 'string' ? JSON.parse(params) : params;
+            const {csrf, type, value} = typeof (params) === 'string' ? JSON.parse(params) : params;
             if (!checkCSRF(this, csrf)) return;
             console.log('-- /record_event -->', this.session.uid, type, value);
             const str_value = typeof value === 'string' ? value : JSON.stringify(value);
@@ -306,7 +306,7 @@ export default function useGeneralApi(app) {
         }
     });
 
-    router.post('/csp_violation', function *() {
+    router.post('/csp_violation', function* () {
         if (rateLimitReq(this, this.req)) return;
         let params;
         try {
@@ -325,9 +325,9 @@ export default function useGeneralApi(app) {
         this.body = '';
     });
 
-    router.post('/page_view', koaBody, function *() {
+    router.post('/page_view', koaBody, function* () {
         const params = this.request.body;
-        const {csrf, page, ref} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf, page, ref} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         if (page.match(/\/feed$/)) {
             this.body = JSON.stringify({views: 0});
@@ -353,9 +353,7 @@ export default function useGeneralApi(app) {
                 } else {
                     yield models.Page.create(escAttrs({permlink: page, views}), {logging: false});
                 }
-            } else {
-                if (page_model) views = page_model.views;
-            }
+            } else if (page_model) views = page_model.views;
             this.body = JSON.stringify({views});
             if (mixpanel) {
                 let referring_domain = '';
@@ -386,18 +384,18 @@ export default function useGeneralApi(app) {
         }
     });
 
-    router.post('/save_cords', koaBody, function *() {
+    router.post('/save_cords', koaBody, function* () {
         const params = this.request.body;
-        const {csrf, x, y} = typeof(params) === 'string' ? JSON.parse(params) : params;
+        const {csrf, x, y} = typeof (params) === 'string' ? JSON.parse(params) : params;
         if (!checkCSRF(this, csrf)) return;
         const user = yield models.User.findOne({
             where: { id: this.session.user }
         });
         if (user) {
-            let data = user.sign_up_meta ? JSON.parse(user.sign_up_meta) : {};
-            data["button_screen_x"] = x;
-            data["button_screen_y"] = y;
-            data["last_step"] = 3;
+            const data = user.sign_up_meta ? JSON.parse(user.sign_up_meta) : {};
+            data.button_screen_x = x;
+            data.button_screen_y = y;
+            data.last_step = 3;
             try {
                 user.update({
                     sign_up_meta: JSON.stringify(data)
@@ -420,7 +418,11 @@ function* createAccount({
     owner, active, posting, memo
 }) {
     const operations = [['account_create_with_delegation', {
-        fee, creator, new_account_name, json_metadata, delegation,
+        fee,
+creator,
+new_account_name,
+json_metadata,
+delegation,
         owner: {weight_threshold: 1, account_auths: [], key_auths: [[owner, 1]]},
         active: {weight_threshold: 1, account_auths: [], key_auths: [[active, 1]]},
         posting: {weight_threshold: 1, account_auths: [], key_auths: [[posting, 1]]},
@@ -432,4 +434,4 @@ function* createAccount({
     }, [signingKey])
 }
 
-const parseSig = hexSig => {try {return Signature.fromHex(hexSig)} catch(e) {return null}}
+const parseSig = (hexSig) => { try { return Signature.fromHex(hexSig) } catch(e) { return null } }

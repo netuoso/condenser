@@ -5,7 +5,7 @@ import registerServiceWorker from 'app/utils/RegisterServiceWorker';
 import {api} from 'steem';
 
 const wait = ms => (
-    new Promise(resolve => {
+    new Promise((resolve) => {
         setTimeout(() => resolve(), ms)
     })
 )

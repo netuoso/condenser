@@ -21,12 +21,12 @@ module.exports = function (sequelize, DataTypes) {
         account_status: DataTypes.STRING
     }, {
         tableName: 'users',
-        createdAt   : 'created_at',
-        updatedAt   : 'updated_at',
-        timestamps  : true,
-        underscored : true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        timestamps: true,
+        underscored: true,
         classMethods: {
-            associate: function (models) {
+            associate(models) {
                 User.hasMany(models.Identity);
                 User.hasMany(models.Account);
                 User.hasMany(models.UserAttribute);

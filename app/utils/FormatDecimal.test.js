@@ -3,6 +3,7 @@
 import chai, {expect} from 'chai';
 import dirtyChai from 'dirty-chai';
 import {formatDecimal} from './ParsersAndFormatters';
+
 chai.use(dirtyChai);
 
 describe('formatDecimal', () => {
@@ -16,7 +17,7 @@ describe('formatDecimal', () => {
             [1000000000000.00, '1,000,000,000,000.00'],
             [-1000, '-1,000.00'],
         ];
-        test_cases.forEach(v => {
+        test_cases.forEach((v) => {
             expect(formatDecimal(v[0]).join('')).to.equal(v[1]);
         });
     });

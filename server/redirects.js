@@ -10,8 +10,8 @@ export default function useRedirects(app) {
 
     app.use(router.routes());
 
-    redirects.forEach(r => {
-        router.get(r[0], function *() {
+    redirects.forEach((r) => {
+        router.get(r[0], function* () {
             const dest = Object.keys(this.params).reduce((value, key) => value.replace('$' + key, this.params[key]), r[1]);
             console.log(`server redirect: [${r[0]}] ${this.request.url} -> ${dest}`);
             this.status = r[2] || 301;

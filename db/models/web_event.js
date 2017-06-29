@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    var WebEvent = sequelize.define('WebEvent', {
+    const WebEvent = sequelize.define('WebEvent', {
         event_type: DataTypes.STRING(64),
         value: DataTypes.STRING(1024),
         user_id: DataTypes.INTEGER,
@@ -27,8 +27,8 @@ module.exports = function (sequelize, DataTypes) {
         tableName: 'web_events',
         createdAt: 'created_at',
         updatedAt: false,
-        timestamps  : true,
-        underscored : true
+        timestamps: true,
+        underscored: true
     });
     return WebEvent;
 };

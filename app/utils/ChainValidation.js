@@ -45,8 +45,8 @@ export function validate_account_name(value) {
 
 export function validate_memo_field(value, username, memokey) {
     let suffix;
-    value = value.split(' ').filter(v=>v!='');
-    for (var w in value) {
+    value = value.split(' ').filter(v => v!='');
+    for (const w in value) {
         if (PrivateKey.isWif(value[w])) {
             return suffix = 'Do not use private keys in memos. ';
         }

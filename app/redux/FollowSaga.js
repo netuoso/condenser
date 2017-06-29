@@ -53,7 +53,8 @@ function* loadFollowsLoop(method, account, type, start = '', limit = 100) {
     let cnt = 0
     let lastAccountName = null
 
-    yield put({type: 'global/UPDATE', payload: {
+    yield put({type: 'global/UPDATE',
+payload: {
         key: ['follow_inprogress', method, account],
         notSet: Map(),
         updater: (m) => {
@@ -79,7 +80,8 @@ function* loadFollowsLoop(method, account, type, start = '', limit = 100) {
     } else {
         // This condition happens only once at the very end of the list.
         // Every account has a different followers and following list for: blog, ignore
-        yield put({type: 'global/UPDATE', payload: {
+        yield put({type: 'global/UPDATE',
+payload: {
             key: [],
             updater: (m) => {
                 m = m.asMutable()

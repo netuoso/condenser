@@ -7,7 +7,10 @@ import {PrivateKey, PublicKey, Aes, key_utils} from 'steem/lib/auth/ecc';
 
 module.exports = {
 
-    PrivateKey, PublicKey, Aes, key_utils,
+    PrivateKey,
+PublicKey,
+Aes,
+key_utils,
 
     // Run once to start, then again to stop and print a report
     // https://facebook.github.io/react/docs/perf.html
@@ -28,16 +31,16 @@ module.exports = {
     },
 
     resolve: (object, atty = '_') => {
-        if (! object.then) {
+        if (!object.then) {
             console.log(object)
             return object
         }
         return new Promise((resolve, reject) => {
-            object.then(result => {
+            object.then((result) => {
                 console.log(result)
                 resolve(result)
                 window[atty] = result
-            }).catch(error => {
+            }).catch((error) => {
                 console.error(error)
                 reject(error)
                 window[atty] = error
@@ -45,8 +48,8 @@ module.exports = {
         })
     },
 
-    init: context => {
-        if (! context) return
+    init: (context) => {
+        if (!context) return
         for (const obj in module.exports) {
             if (obj === 'init') continue
             context[obj] = module.exports[obj]

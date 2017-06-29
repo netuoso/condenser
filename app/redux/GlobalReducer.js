@@ -13,8 +13,8 @@ export default createModule({
         {
             action: 'SET_COLLAPSED',
             reducer: (state, action) => {
-                return state.withMutations(map => {
-                    map.updateIn(['content', action.payload.post], value => {
+                return state.withMutations((map) => {
+                    map.updateIn(['content', action.payload.post], (value) => {
                         value.merge(Map({collapsed: action.payload.collapsed}));
                     });
                 });
@@ -25,7 +25,7 @@ export default createModule({
             reducer: (state, action) => {
                 let payload = fromJS(action.payload)
                 if(payload.has('content')) {
-                    const content = payload.get('content').withMutations(c => {
+                    const content = payload.get('content').withMutations((c) => {
                         c.forEach((cc, key) => {
                             cc = emptyContentMap.mergeDeep(cc)
                             const stats = fromJS(contentStats(cc))
@@ -57,7 +57,10 @@ export default createModule({
                 const key = author + '/' + permlink
 
                 let updatedState = state.updateIn(['content', key], Map(emptyContent), r => r.merge({
-                    author, permlink, parent_author, parent_permlink,
+                    author,
+permlink,
+parent_author,
+parent_permlink,
                     title: title.toString('utf-8'),
                     body: body.toString('utf-8'),
                 }))
@@ -79,7 +82,7 @@ export default createModule({
                 // console.log('GlobalReducer -- RECEIVE_CONTENT content', content)
                 content = fromJS(content)
                 const key = content.get('author') + '/' + content.get('permlink')
-                return state.updateIn(['content', key], Map(), c => {
+                return state.updateIn(['content', key], Map(), (c) => {
                     c = emptyContentMap.mergeDeep(c)
                     c = c.delete('active_votes')
                     c = c.mergeDeep(content)
@@ -164,27 +167,27 @@ export default createModule({
                 if (order === 'by_author' || order === 'by_feed' || order === 'by_comments' || order === 'by_replies') {
                     // category is either "blog", "feed", "comments", or "recent_replies" (respectively) -- and all posts are keyed under current profile
                     const key = ['accounts', accountname, category]
-                    new_state = state.updateIn(key, List(), list => {
-                        return list.withMutations(posts => {
-                            data.forEach(value => {
+                    new_state = state.updateIn(key, List(), (list) => {
+                        return list.withMutations((posts) => {
+                            data.forEach((value) => {
                                 const key2 = `${value.author}/${value.permlink}`
                                 if (!posts.includes(key2)) posts.push(key2);
                             });
                         });
                     });
                 } else {
-                    new_state = state.updateIn(['discussion_idx', category || '', order], list => {
-                        return list.withMutations(posts => {
-                            data.forEach(value => {
+                    new_state = state.updateIn(['discussion_idx', category || '', order], (list) => {
+                        return list.withMutations((posts) => {
+                            data.forEach((value) => {
                                 const entry = `${value.author}/${value.permlink}`;
                                 if (!posts.includes(entry)) posts.push(entry);
                             });
                         });
                     });
                 }
-                new_state = new_state.updateIn(['content'], content => {
-                    return content.withMutations(map => {
-                        data.forEach(value => {
+                new_state = new_state.updateIn(['content'], (content) => {
+                    return content.withMutations((map) => {
+                        data.forEach((value) => {
                             // console.log('GlobalReducer -- RECEIVE_DATA', value)
                             const key = `${value.author}/${value.permlink}`;
                             value = fromJS(value)
@@ -208,18 +211,18 @@ export default createModule({
             reducer: (state, {payload: {data}}) => {
                 // console.log('-- RECEIVE_RECENT_POSTS state -->', state.toJS());
                 // console.log('-- RECEIVE_RECENT_POSTS reducer -->', data);
-                let new_state = state.updateIn(['discussion_idx', '', 'created'], list => {
+                let new_state = state.updateIn(['discussion_idx', '', 'created'], (list) => {
                     if (!list) list = List();
-                    return list.withMutations(posts => {
-                        data.forEach(value => {
+                    return list.withMutations((posts) => {
+                        data.forEach((value) => {
                             const entry = `${value.author}/${value.permlink}`;
                             if (!posts.includes(entry)) posts.unshift(entry);
                         });
                     });
                 });
-                new_state = new_state.updateIn(['content'], content => {
-                    return content.withMutations(map => {
-                        data.forEach(value => {
+                new_state = new_state.updateIn(['content'], (content) => {
+                    return content.withMutations((map) => {
+                        data.forEach((value) => {
                             const key = `${value.author}/${value.permlink}`;
                             if (!map.has(key)) {
                                 value = fromJS(value)

@@ -68,9 +68,9 @@ export default ({large = true, highQualityPost = true, noImage = false, sanitize
                             frameborder: '0',
                             allowfullscreen: 'allowfullscreen',
                             webkitallowfullscreen: 'webkitallowfullscreen', // deprecated but required for vimeo : https://vimeo.com/forums/help/topic:278181
-                            mozallowfullscreen: 'mozallowfullscreen',       // deprecated but required for vimeo
+                            mozallowfullscreen: 'mozallowfullscreen', // deprecated but required for vimeo
                             src,
-                            width:  large ? '640' : '480',
+                            width: large ? '640' : '480',
                             height: large ? '360' : '270',
                         },
                     }
@@ -92,7 +92,7 @@ export default ({large = true, highQualityPost = true, noImage = false, sanitize
             // replace http:// with // to force https when needed
             src = src.replace(/^http:\/\//i, '//')
 
-            let atts = {src}
+            const atts = {src}
             if(alt && alt !== '') atts.alt = alt
             return {tagName, attribs: atts}
         },

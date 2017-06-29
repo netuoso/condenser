@@ -89,7 +89,7 @@ export function* threshold({pubkeys, authority, authType, recurse = 1}) {
 function pubkeyThreshold({pubkeys, authority}) {
     let available = 0
     const key_auths = authority.get('key_auths')
-    key_auths.forEach(k => {
+    key_auths.forEach((k) => {
         if (pubkeys.has(k.get(0))) {
             available += k.get(1)
         }
@@ -124,10 +124,8 @@ export function* findSigningKey({opType, username, password}) {
             } catch (e) {
                 private_key = PrivateKey.fromSeed(username + authType + password)
             }
-        } else {
-            if(private_keys)
+        } else if(private_keys)
                 private_key = private_keys.get(authType + '_private')
-        }
         if (private_key) {
             const pubkey = private_key.toPublicKey().toString()
             const pubkeys = Set([pubkey])

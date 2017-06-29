@@ -94,7 +94,7 @@ function* preBroadcast_custom_json({operation}) {
                 yield put(g.actions.update({
                     key: ['follow', 'getFollowingAsync', follower],
                     notSet: Map(),
-                    updater: m => {
+                    updater: (m) => {
                         //m = m.asMutable()
                         if(action == null) {
                             m = m.update('blog_result', Set(), r => r.delete(following))
@@ -141,12 +141,10 @@ function* broadcastOperation({payload:
             const signingKey = yield call(findSigningKey, {opType: type, username, password})
             if (signingKey)
                 payload.keys.push(signingKey)
-            else {
-                if (!password) {
+            else if (!password) {
                     yield put(user.actions.showLogin({operation: {type, operation, username, successCallback, errorCallback, saveLogin: true}}))
                     return
                 }
-            }
         }
         yield call(broadcastPayload, {payload})
         let eventType = type.replace(/^([a-z])/, g => g.toUpperCase()).replace(/_([a-z])/g, g => g[1].toUpperCase());
@@ -203,10 +201,10 @@ function* broadcastPayload({payload: {operations, keys, username, successCallbac
             const bump = env.BROWSER ? parseInt(localStorage.getItem('bump') || 0) : 0;
             if (env.BROWSER && bump === 1) { // for testing
                 console.log('TransactionSaga bump(no broadcast) and reject', JSON.stringify(operations, null, 2))
-                setTimeout(() => {reject(new Error('Testing, fake error'))}, 2000)
+                setTimeout(() => { reject(new Error('Testing, fake error')) }, 2000)
             } else if (env.BROWSER && bump === 2) { // also for testing
                 console.log('TransactionSaga bump(no broadcast) and resolve', JSON.stringify(operations, null, 2))
-                setTimeout(() => {resolve(); broadcastedEvent()}, 2000)
+                setTimeout(() => { resolve(); broadcastedEvent() }, 2000)
             } else {
                 broadcast.send({ extensions: [], operations }, keys, (err) => {
                     if(err) {
@@ -230,7 +228,8 @@ function* broadcastPayload({payload: {operations, keys, username, successCallbac
             }
             const config = operation.__config
             if (config && config.successMessage) {
-                yield put({type: 'ADD_NOTIFICATION', payload: {
+                yield put({type: 'ADD_NOTIFICATION',
+payload: {
                     key: "trx_" + Date.now(),
                     message: config.successMessage,
                     dismissAfter: 5000
@@ -344,7 +343,9 @@ function* preBroadcast_comment({operation, username}) {
     const op = {
         ...operation,
         permlink: permlink.toLowerCase(),
-        parent_author, parent_permlink, json_metadata,
+        parent_author,
+parent_permlink,
+json_metadata,
         title: new Buffer((operation.title || '').trim(), 'utf-8'),
         body: new Buffer(body2, 'utf-8'),
     }
@@ -415,6 +416,7 @@ function* createPermlink(title, author, parent_author, parent_permlink) {
 }
 
 import diff_match_patch from 'diff-match-patch'
+
 const dmp = new diff_match_patch()
 
 function createPatch(text1, text2) {
@@ -508,14 +510,17 @@ function* recoverAccount({payload: {account_to_recover, old_password, new_passwo
     const newPosting = pwPubkey(account_to_recover, new_password.trim(), 'posting')
     const newMemo = pwPubkey(account_to_recover, new_password.trim(), 'memo')
 
-    const new_owner_authority = {weight_threshold: 1, account_auths: [],
+    const new_owner_authority = {weight_threshold: 1,
+account_auths: [],
         key_auths: [[newOwner, 1]]}
 
-    const recent_owner_authority = {weight_threshold: 1, account_auths: [],
+    const recent_owner_authority = {weight_threshold: 1,
+account_auths: [],
         key_auths: [[oldOwner, 1]]}
 
     try {
-        yield broadcast.sendAsync({extensions: [], operations: [
+        yield broadcast.sendAsync({extensions: [],
+operations: [
             ['recover_account', {
                 account_to_recover,
                 new_owner_authority,
@@ -526,7 +531,8 @@ function* recoverAccount({payload: {account_to_recover, old_password, new_passwo
         // change password
         // change password probably requires a separate transaction (single trx has not been tested)
         const {json_metadata} = account
-        yield broadcast.sendAsync({extensions: [], operations: [
+        yield broadcast.sendAsync({extensions: [],
+operations: [
             ['account_update', {
                 account: account.name,
                 active: {weight_threshold: 1, account_auths: [], key_auths: [[newActive, 1]]},
@@ -659,10 +665,14 @@ function* updateAuthorities({payload: {accountName, signingKey, auths, twofa, on
     }
     const {memo_key, json_metadata} = account
     const payload = {
-        type: 'account_update', operation: {
-            account: account.name, ...ops2,
-            memo_key, json_metadata,
-        }, keys: [key],
+        type: 'account_update',
+operation: {
+            account: account.name,
+...ops2,
+            memo_key,
+json_metadata,
+        },
+keys: [key],
         successCallback: onSuccess,
         errorCallback: onError,
     }

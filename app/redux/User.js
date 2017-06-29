@@ -42,14 +42,16 @@ export default createModule({
                 return state.merge({show_terms_modal: true, loginBroadcastOperation: operation, termsDefault})
             }
         },
-        { action: 'HIDE_LOGIN', reducer: state =>
+        { action: 'HIDE_LOGIN',
+reducer: state =>
             state.merge({show_login_modal: false, loginBroadcastOperation: undefined, loginDefault: undefined}) },
         { action: 'SAVE_LOGIN_CONFIRM', reducer: (state, {payload}) => state.set('saveLoginConfirm', payload) },
-        { action: 'SAVE_LOGIN', reducer: (state) => state }, // Use only for low security keys (like posting only keys)
-        { action: 'REMOVE_HIGH_SECURITY_KEYS', reducer: (state) => {
+        { action: 'SAVE_LOGIN', reducer: state => state }, // Use only for low security keys (like posting only keys)
+        { action: 'REMOVE_HIGH_SECURITY_KEYS',
+reducer: (state) => {
             if(!state.hasIn(['current', 'private_keys'])) return state
             let empty = false
-            state = state.updateIn(['current', 'private_keys'], private_keys => {
+            state = state.updateIn(['current', 'private_keys'], (private_keys) => {
                 if(!private_keys) return null
                 if(private_keys.has('active_private'))
                     console.log('removeHighSecurityKeys')
@@ -67,15 +69,16 @@ export default createModule({
             state = state.setIn(['authority', username, 'owner'], 'none')
             return state
         }},
-        { action: 'CHANGE_LANGUAGE', reducer: (state, {payload}) => {
-            return state.set('locale', payload)}
+        { action: 'CHANGE_LANGUAGE',
+reducer: (state, {payload}) => {
+            return state.set('locale', payload) }
         },
         { action: 'SHOW_TRANSFER', reducer: state => state.set('show_transfer_modal', true) },
         { action: 'HIDE_TRANSFER', reducer: state => state.set('show_transfer_modal', false) },
         { action: 'SHOW_PROMOTE_POST', reducer: state => state.set('show_promote_post_modal', true) },
         { action: 'HIDE_PROMOTE_POST', reducer: state => state.set('show_promote_post_modal', false) },
         { action: 'SET_TRANSFER_DEFAULTS', reducer: (state, {payload}) => state.set('transfer_defaults', fromJS(payload)) },
-        { action: 'CLEAR_TRANSFER_DEFAULTS', reducer: (state) => state.remove('transfer_defaults') },
+        { action: 'CLEAR_TRANSFER_DEFAULTS', reducer: state => state.remove('transfer_defaults') },
         {
             action: 'USERNAME_PASSWORD_LOGIN',
             reducer: state => state, // saga
@@ -90,7 +93,7 @@ export default createModule({
         },
         {
             action: 'CLOSE_LOGIN',
-            reducer: (state) => state.merge({ login_error: undefined, show_login_modal: false, loginBroadcastOperation: undefined, loginDefault: undefined })
+            reducer: state => state.merge({ login_error: undefined, show_login_modal: false, loginBroadcastOperation: undefined, loginDefault: undefined })
         },
         {
             action: 'LOGIN_ERROR',

@@ -36,7 +36,7 @@ export function serverApiRecordEvent(type, val, rate_limit_ms = 5000) {
 export function getNotifications(account) {
     if (!process.env.BROWSER || window.$STM_ServerBusy) return Promise.resolve(null);
     const request = Object.assign({}, request_base, {method: 'get'});
-    return fetch(`/api/v1/notifications/${account}`, request).then(r => r.json()).then(res => {
+    return fetch(`/api/v1/notifications/${account}`, request).then(r => r.json()).then((res) => {
         return notificationsArrayToMap(res);
 });
 }
@@ -45,7 +45,7 @@ export function markNotificationRead(account, fields) {
     if (!process.env.BROWSER || window.$STM_ServerBusy) return Promise.resolve(null);
     const request = Object.assign({}, request_base, {method: 'put', mode: 'cors'});
     const field_nums_str = fields.map(f => NTYPES.indexOf(f)).join('-');
-    return fetch(`/api/v1/notifications/${account}/${field_nums_str}`, request).then(r => r.json()).then(res => {
+    return fetch(`/api/v1/notifications/${account}/${field_nums_str}`, request).then(r => r.json()).then((res) => {
         return notificationsArrayToMap(res);
 });
 }
@@ -59,7 +59,7 @@ export function recordPageView(page, ref) {
     }
     if (!process.env.BROWSER || window.$STM_ServerBusy) return Promise.resolve(0);
     const request = Object.assign({}, request_base, {body: JSON.stringify({csrf: $STM_csrf, page, ref})});
-    last_page_promise = fetch(`/api/v1/page_view`, request).then(r => r.json()).then(res => {
+    last_page_promise = fetch(`/api/v1/page_view`, request).then(r => r.json()).then((res) => {
         last_views = res.views;
     return last_views;
 });
@@ -79,7 +79,7 @@ export function sendConfirmEmail(account) {
 }
 
 export function saveCords(x, y) {
-    const request = Object.assign({}, request_base, {body: JSON.stringify({csrf: $STM_csrf, x: x, y: y})});
+    const request = Object.assign({}, request_base, {body: JSON.stringify({csrf: $STM_csrf, x, y})});
     fetch('/api/v1/save_cords', request);
 }
 

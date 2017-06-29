@@ -12,12 +12,12 @@ module.exports = function (sequelize, DataTypes) {
         value: DataTypes.STRING(256)
     }, {
         tableName: 'user_attributes',
-        createdAt   : 'created_at',
-        updatedAt   : 'updated_at',
-        timestamps  : true,
-        underscored : true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        timestamps: true,
+        underscored: true,
         classMethods: {
-            associate: function (models) {
+            associate(models) {
                 UserAttribute.belongsTo(models.User, {
                     onDelete: "CASCADE",
                     foreignKey: {

@@ -7,12 +7,12 @@ import {api} from 'steem';
 export const marketWatches = [watchLocationChange, watchUserLogin, watchMarketUpdate];
 
 const wait = ms => (
-    new Promise(resolve => {
+    new Promise((resolve) => {
         setTimeout(() => resolve(), ms)
     }))
 
 let polling = false
-let active_user = null
+const active_user = null
 let last_trade = null
 
 export function* fetchMarket(location_change_action) {
@@ -26,7 +26,6 @@ export function* fetchMarket(location_change_action) {
     polling = true
 
     while(polling) {
-
         try {
             const state = yield call([api, api.getOrderBookAsync], 500);
             yield put(MarketReducer.actions.receiveOrderbook(state));
@@ -36,13 +35,13 @@ export function* fetchMarket(location_change_action) {
                 trades = yield call([api, api.getRecentTradesAsync], 25);
                 yield put(MarketReducer.actions.receiveTradeHistory(trades));
             } else {
-                let start = last_trade.toISOString().slice(0, -5)
+                const start = last_trade.toISOString().slice(0, -5)
                 trades = yield call([api, api.getTradeHistoryAsync], start, "1969-12-31T23:59:59", 1000);
                 trades = trades.reverse()
                 yield put(MarketReducer.actions.appendTradeHistory(trades));
             }
             if(trades.length > 0) {
-              last_trade = new Date((new Date(Date.parse(trades[0]['date']))).getTime() + 1000)
+              last_trade = new Date((new Date(Date.parse(trades[0].date))).getTime() + 1000)
             }
 
             const state3 = yield call([api, api.getTickerAsync]);

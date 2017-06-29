@@ -107,7 +107,7 @@ function* usernamePasswordLogin(action) {
 //     'limit_order_create', 'limit_order_cancel', 'account_update', 'account_witness_vote']
 
 
-const clean = (value) => value == null || value === '' || /null|undefined/.test(value) ? undefined : value
+const clean = value => value == null || value === '' || /null|undefined/.test(value) ? undefined : value
 
 function* usernamePasswordLogin2({payload: {username, password, saveLogin,
         operationType /*high security*/, afterLoginRedirectToWelcome
@@ -310,11 +310,11 @@ function* saveLogin_localStorage() {
     }
     const postingPubkey = posting_private.toPublicKey().toString()
     try {
-        account.getIn(['active', 'key_auths']).forEach(auth => {
+        account.getIn(['active', 'key_auths']).forEach((auth) => {
             if(auth.get(0) === postingPubkey)
                 throw 'Login will not be saved, posting key is the same as active key'
         })
-        account.getIn(['owner', 'key_auths']).forEach(auth => {
+        account.getIn(['owner', 'key_auths']).forEach((auth) => {
             if(auth.get(0) === postingPubkey)
                 throw 'Login will not be saved, posting key is the same as owner key'
         })
@@ -359,13 +359,13 @@ function* lookupPreviousOwnerAuthority({payload: {}}) {
     // Owner history since this index was installed July 14
     let owner_history = fromJS(yield call([api, api.getOwnerHistoryAsync], username))
     if(owner_history.count() === 0) return
-    owner_history = owner_history.sort((b, a) => {//sort decending
+    owner_history = owner_history.sort((b, a) => { //sort decending
         const aa = a.get('last_valid_time')
         const bb = b.get('last_valid_time')
         return aa < bb ? -1 : aa > bb ? 1 : 0
     })
     // console.log('UserSaga ---> owner_history', owner_history.toJS())
-    const previous_owner_authority = owner_history.find(o => {
+    const previous_owner_authority = owner_history.find((o) => {
         const auth = o.get('previous_owner_authority')
         const weight_threshold = auth.get('weight_threshold')
         const key3 = auth.get('key_auths').find(key2 => key2.get(0) === login_owner_pubkey && key2.get(1) >= weight_threshold)
@@ -385,7 +385,7 @@ function* uploadImageWatch() {
 
 function* uploadImage({payload: {file, dataUrl, filename = 'image.txt', progress}}) {
     const _progress = progress
-    progress = msg => {
+    progress = (msg) => {
         // console.log('Upload image progress', msg)
         _progress(msg)
     }
@@ -411,7 +411,7 @@ function* uploadImage({payload: {file, dataUrl, filename = 'image.txt', progress
     if(file) {
         // drag and drop
         const reader = new FileReader()
-        data = yield new Promise(resolve => {
+        data = yield new Promise((resolve) => {
             reader.addEventListener('load', () => {
                 const result = new Buffer(reader.result, 'binary')
                 resolve(result)

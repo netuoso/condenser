@@ -6,7 +6,7 @@ import { translate } from '../Translator.js';
 import {api} from 'steem';
 
 const wait = ms => (
-    new Promise(resolve => {
+    new Promise((resolve) => {
         setTimeout(() => resolve(), ms)
     })
 );

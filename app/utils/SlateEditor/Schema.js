@@ -13,13 +13,13 @@ const $ = require('cheerio');
 export const schema = {
     defaultNode: 'paragraph',
     toolbarMarks: [
-        { type: 'bold',      label: <strong>B</strong> },
-        { type: 'italic',    label: <i>i</i> },
+        { type: 'bold', label: <strong>B</strong> },
+        { type: 'italic', label: <i>i</i> },
         //{ type: 'underline', label: <u>U</u> },
         //{ type: 'strike',    label: <del>S</del> },
-        { type: 'code',      label: <code>{'{}'}</code> },
-        { type: 'sup',       label: <span>x<sup>2</sup></span> },
-        { type: 'sub',       label: <span>x<sub>2</sub></span> },
+        { type: 'code', label: <code>{'{}'}</code> },
+        { type: 'sup', label: <span>x<sup>2</sup></span> },
+        { type: 'sub', label: <span>x<sub>2</sub></span> },
     ],
 
     // blockTypes: {...Blocks,},
@@ -27,37 +27,37 @@ export const schema = {
     // sidebarTypes: [],
 
     nodes: {
-        'paragraph':     ({ children, attributes }) => <p {...attributes}>{children}</p>,
-        'code-block':    ({ children, attributes }) => <pre {...attributes}><code>{children}</code></pre>,
-        'block-quote':   ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
+        paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
+        'code-block': ({ children, attributes }) => <pre {...attributes}><code>{children}</code></pre>,
+        'block-quote': ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
         'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
         'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
-        'heading-one':   ({ children, attributes }) => <h1 {...attributes}>{children}</h1>,
-        'heading-two':   ({ children, attributes }) => <h2 {...attributes}>{children}</h2>,
+        'heading-one': ({ children, attributes }) => <h1 {...attributes}>{children}</h1>,
+        'heading-two': ({ children, attributes }) => <h2 {...attributes}>{children}</h2>,
         'heading-three': ({ children, attributes }) => <h3 {...attributes}>{children}</h3>,
-        'heading-four':  ({ children, attributes }) => <h4 {...attributes}>{children}</h4>,
-        'list-item':     ({ children, attributes }) => <li {...attributes}>{children}</li>,
-        'table':         ({ children, attributes }) => <table {...attributes}>{children}</table>,
-        'thead':         ({ children, attributes }) => <thead {...attributes}>{children}</thead>,
-        'tbody':         ({ children, attributes }) => <tbody {...attributes}>{children}</tbody>,
-        'tr':            ({ children, attributes }) => <tr {...attributes}>{children}</tr>,
-        'td':            ({ children, attributes }) => <td {...attributes}>{children}</td>,
-        'th':            ({ children, attributes }) => <th {...attributes}>{children}</th>,
-        'hr':    HRule,
-        'image': Image,
-        'link':  Link,
-        'embed': Iframe,
-        'align': Align,
+        'heading-four': ({ children, attributes }) => <h4 {...attributes}>{children}</h4>,
+        'list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+        table: ({ children, attributes }) => <table {...attributes}>{children}</table>,
+        thead: ({ children, attributes }) => <thead {...attributes}>{children}</thead>,
+        tbody: ({ children, attributes }) => <tbody {...attributes}>{children}</tbody>,
+        tr: ({ children, attributes }) => <tr {...attributes}>{children}</tr>,
+        td: ({ children, attributes }) => <td {...attributes}>{children}</td>,
+        th: ({ children, attributes }) => <th {...attributes}>{children}</th>,
+        hr: HRule,
+        image: Image,
+        link: Link,
+        embed: Iframe,
+        align: Align,
     },
 
     marks: {
-        bold:      props => <strong>{props.children}</strong>,
-        code:      props => <code>{props.children}</code>,
-        italic:    props => <em>{props.children}</em>,
+        bold: props => <strong>{props.children}</strong>,
+        code: props => <code>{props.children}</code>,
+        italic: props => <em>{props.children}</em>,
         underline: props => <u>{props.children}</u>,
-        strike:    props => <del>{props.children}</del>,
-        sub:       props => <sub>{props.children}</sub>,
-        sup:       props => <sup>{props.children}</sup>,
+        strike: props => <del>{props.children}</del>,
+        sub: props => <sub>{props.children}</sub>,
+        sup: props => <sup>{props.children}</sup>,
     },
 }
 
@@ -68,36 +68,36 @@ export const schema = {
 
 // Map html --> block type
 const BLOCK_TAGS = {
-    p:          'paragraph',
+    p: 'paragraph',
     blockquote: 'block-quote',
-    pre:        'code-block',
-    h1:         'heading-one',
-    h2:         'heading-two',
-    h3:         'heading-three',
-    h4:         'heading-four',
-    ul:         'bulleted-list',
-    ol:         'numbered-list',
-    li:         'list-item',
-    hr:         'hr',
-    table:      'table',
-    thead:      'thead',
-    tbody:      'tbody',
-    tr:         'tr',
-    td:         'td',
-    th:         'th',
+    pre: 'code-block',
+    h1: 'heading-one',
+    h2: 'heading-two',
+    h3: 'heading-three',
+    h4: 'heading-four',
+    ul: 'bulleted-list',
+    ol: 'numbered-list',
+    li: 'list-item',
+    hr: 'hr',
+    table: 'table',
+    thead: 'thead',
+    tbody: 'tbody',
+    tr: 'tr',
+    td: 'td',
+    th: 'th',
 }
 
 // Map HTML --> mark type
 const MARK_TAGS = {
-    em:     'italic',
-    i:      'italic',
+    em: 'italic',
+    i: 'italic',
     strong: 'bold',
-    b:      'bold',
-    u:      'underline',
-    del:    'strike',
+    b: 'bold',
+    u: 'underline',
+    del: 'strike',
     strike: 'strike',
-    sup:    'sup',
-    sub:    'sub',
+    sup: 'sup',
+    sub: 'sub',
 }
 
 const validAligns = [
@@ -132,7 +132,7 @@ export const HtmlRules = [
             }
             if(el.tagName == 'div') {
                 const align = el.attribs.class
-                if(! validAligns.includes(align)) return;
+                if(!validAligns.includes(align)) return;
                 return {
                     kind: 'block',
                     type: 'align',
@@ -181,7 +181,7 @@ export const HtmlRules = [
             // Generate output block with clean children
             const block = {
                 kind: 'block',
-                type: type,
+                type,
                 isVoid: (type == 'hr'),
                 nodes: next(children)
             }
@@ -204,23 +204,23 @@ export const HtmlRules = [
         serialize: (object, children) => {
             if(object.kind !== 'block') return
             switch(object.type) {
-                case 'paragraph':          return <p>{children}</p>
-                case 'block-quote':        return <blockquote>{children}</blockquote>
-                case 'code-block':         return <pre><code>{children}</code></pre>
-                case 'heading-one':        return <h1>{children}</h1>
-                case 'heading-two':        return <h2>{children}</h2>
-                case 'heading-three':      return <h3>{children}</h3>
-                case 'heading-four':       return <h4>{children}</h4>
-                case 'bulleted-list':      return <ul>{children}</ul>
-                case 'numbered-list':      return <ol>{children}</ol>
-                case 'list-item':          return <li>{children}</li>
-                case 'hr':                 return <hr />
-                case 'table':              return <table>{children}</table>
-                case 'thead':              return <thead>{children}</thead>
-                case 'tbody':              return <tbody>{children}</tbody>
-                case 'tr':                 return <tr>{children}</tr>
-                case 'td':                 return <td>{children}</td>
-                case 'th':                 return <th>{children}</th>
+                case 'paragraph': return <p>{children}</p>
+                case 'block-quote': return <blockquote>{children}</blockquote>
+                case 'code-block': return <pre><code>{children}</code></pre>
+                case 'heading-one': return <h1>{children}</h1>
+                case 'heading-two': return <h2>{children}</h2>
+                case 'heading-three': return <h3>{children}</h3>
+                case 'heading-four': return <h4>{children}</h4>
+                case 'bulleted-list': return <ul>{children}</ul>
+                case 'numbered-list': return <ol>{children}</ol>
+                case 'list-item': return <li>{children}</li>
+                case 'hr': return <hr />
+                case 'table': return <table>{children}</table>
+                case 'thead': return <thead>{children}</thead>
+                case 'tbody': return <tbody>{children}</tbody>
+                case 'tr': return <tr>{children}</tr>
+                case 'td': return <td>{children}</td>
+                case 'th': return <th>{children}</th>
             }
         }
     },
@@ -232,20 +232,20 @@ export const HtmlRules = [
             if (!type) return
             return {
                 kind: 'mark',
-                type: type,
+                type,
                 nodes: next(el.children)
             }
         },
         serialize: (object, children) => {
             if(object.kind !== 'mark') return;
             switch(object.type) {
-                case 'bold':      return <strong>{children}</strong>
-                case 'italic':    return <em>{children}</em>
+                case 'bold': return <strong>{children}</strong>
+                case 'italic': return <em>{children}</em>
                 case 'underline': return <u>{children}</u>
-                case 'strike':    return <del>{children}</del>
-                case 'code':      return <code>{children}</code>
-                case 'sup':       return <sup>{children}</sup>
-                case 'sub':       return <sub>{children}</sub>
+                case 'strike': return <del>{children}</del>
+                case 'code': return <code>{children}</code>
+                case 'sup': return <sup>{children}</sup>
+                case 'sub': return <sub>{children}</sub>
             }
         }
     },
@@ -280,8 +280,8 @@ export const HtmlRules = [
                     }
                 case 'br':
                     return {
-                        "kind": "text",
-                        "ranges": [{"text": "\n"}]
+                        kind: "text",
+                        ranges: [{text: "\n"}]
                     }
                 case 'code':
                     // may not be necessary after pr #406
@@ -291,9 +291,8 @@ export const HtmlRules = [
                             type: 'code',
                             nodes: next(el.children)
                         }
-                    } else {
-                        console.log("** skipping <code> within a <pre>")
                     }
+                        console.log("** skipping <code> within a <pre>")
             }
         },
 
@@ -318,8 +317,8 @@ export const HtmlRules = [
 
     // debug uncaught nodes/elements
     {
-        deserialize: (el, next) => {if(el.type !== 'text') console.log("** no deserializer for: ", $.html(el).replace(/\n/g, "\\n"))},
-        serialize: (object, children) => {if(object.kind != 'string') console.log("** no serializer for:", object.type, object.kind, 'data:', JSON.stringify(object))}
+        deserialize: (el, next) => { if(el.type !== 'text') console.log("** no deserializer for: ", $.html(el).replace(/\n/g, "\\n")) },
+        serialize: (object, children) => { if(object.kind != 'string') console.log("** no serializer for:", object.type, object.kind, 'data:', JSON.stringify(object)) }
     },
 ]
 
@@ -327,14 +326,14 @@ export const getMarkdownType = (chars) => {
     switch (chars) {
         case '1.':
         case '*':
-        case '-':    return 'list-item';
-        case '>':    return 'block-quote';
-        case '#':    return 'heading-one';
-        case '##':   return 'heading-two';
-        case '###':  return 'heading-three';
+        case '-': return 'list-item';
+        case '>': return 'block-quote';
+        case '#': return 'heading-one';
+        case '##': return 'heading-two';
+        case '###': return 'heading-three';
         case '####': return 'heading-four';
-        case '   ':  return 'code-block';
-        case '---':  return 'hr';
+        case '   ': return 'code-block';
+        case '---': return 'hr';
         default: return null;
     }
 }

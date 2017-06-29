@@ -5,7 +5,7 @@ import {Long} from 'bytebuffer';
 import {VEST_TICKER, LIQUID_TICKER} from 'app/client_config'
 import {fromJS} from 'immutable';
 
-export const numberWithCommas = (x) => x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+export const numberWithCommas = x => x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 export function vestsToSp(state, vesting_shares) {
     const {global} = state

@@ -62,7 +62,7 @@ module.exports = {
             active: {},
             category: {
                 general: { /// the category name
-                    trending: {  /// ~trending within category
+                    trending: { /// ~trending within category
                         last_update: new Date(),
                         fetching: false,
                         timeout: new Date(),

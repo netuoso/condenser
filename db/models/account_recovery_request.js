@@ -23,12 +23,12 @@ module.exports = function (sequelize, DataTypes) {
         status: {type: DataTypes.STRING, unique: false},
     }, {
         tableName: 'arecs',
-        createdAt   : 'created_at',
-        updatedAt   : 'updated_at',
-        timestamps  : true,
-        underscored : true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        timestamps: true,
+        underscored: true,
         classMethods: {
-            associate: function (models) {
+            associate(models) {
                 AccountRecoveryRequest.belongsTo(models.User, {
                     onDelete: "SET NULL",
                     foreignKey: {

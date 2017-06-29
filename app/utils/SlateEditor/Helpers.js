@@ -11,7 +11,7 @@ export const getCollapsedClientRect = () => {
     }
 
     const node = selection.getRangeAt(0).startContainer;
-    if(! findParentTag(node, 'P')) return; // only show sidebar at the beginning of an empty <p>
+    if(!findParentTag(node, 'P')) return; // only show sidebar at the beginning of an empty <p>
 
     const rect = node.getBoundingClientRect();
     return rect;

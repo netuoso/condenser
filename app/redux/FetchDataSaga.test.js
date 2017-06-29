@@ -5,6 +5,7 @@ import dirtyChai from 'dirty-chai';
 import sinon from 'sinon';
 import {call, put} from 'redux-saga/effects';
 import {fetchState} from './FetchDataSaga';
+
 chai.use(dirtyChai);
 
 const action = {
