@@ -283,7 +283,7 @@ class PostFull extends React.Component {
         }
 
         const archived = post_content.get('cashout_time') === '1969-12-31T23:59:59' // TODO: audit after HF19. #1259
-        const readonly = archived || $STM_Config.read_only_mode
+        const readonly = false // Original: archived || $STM_Config.read_only_mode
         const showPromote = username && !archived && post_content.get('depth') == 0
         const showReplyOption = post_content.get('depth') < 255
         const showEditOption = username === author
