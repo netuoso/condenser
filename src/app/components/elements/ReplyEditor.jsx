@@ -1,4 +1,5 @@
 import React from 'react';
+import config from 'config';
 import reactForm from 'app/utils/ReactForm'
 import transaction from 'app/redux/Transaction';
 import MarkdownViewer from 'app/components/cards/MarkdownViewer'
@@ -630,14 +631,27 @@ export default (formId) => connect(
                     case '0%': // decline payout
                         __config.comment_options = {
                             max_accepted_payout: '0.000 SBD',
+                            if(config.get('enable_beneficiaries')) {
+                                extensions: [[0, {beneficiaries: [{ account: config.get('beneficiaries.primary'), weight: 500 }]}]],
+                            }
                         }
                         break;
                     case '100%': // 100% steem power payout
                         __config.comment_options = {
                             percent_steem_dollars: 0, // 10000 === 100% (of 50%)
+                            if(config.get('enable_beneficiaries')) {
+                                extensions: [[0, {beneficiaries: [{ account: config.get('beneficiaries.primary'), weight: 500 }]}]]
+                            }
                         }
                         break;
                     default: // 50% steem power, 50% sd+steem
+                        __config.comment_options = {
+                            percent_steem_dollars: 5000, // 10000 === 100% (of 50%)
+                            if(config.get('enable_beneficiaries')) {
+                                extensions: [[0, {beneficiaries: [{ account: config.get('beneficiaries.primary'), weight: 500 }]}]]
+                            }
+                        }
+                        break;
                 }
             }
 

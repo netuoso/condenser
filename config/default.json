@@ -1,5 +1,5 @@
 {
-  "database_url": "mysql://root:password@127.0.0.1/steemit_dev",
+  "database_url": "mysql://mysql_user:mysql_pass@mysql_server.com/mysql_db",
   "disable_signups": false,
   "facebook_app_id": false,
   "grant": {
@@ -33,7 +33,7 @@
   "helmet": {
     "directives": {
       "childSrc": "'self' www.youtube.com staticxx.facebook.com w.soundcloud.com player.vimeo.com",
-      "connectSrc": "'self' steemit.com wss://steemd.steemit.com api.blocktrades.us",
+      "connectSrc": "'self' steemit.com https://api.steemit.com steemliberator.com rpc.steemliberator.com condenser.steemliberator.com https://rpc.steemliberator.com https://steemitimages.com",
       "defaultSrc": "'self' www.youtube.com staticxx.facebook.com player.vimeo.com",
       "fontSrc": "data: fonts.gstatic.com",
       "frameAncestors": "'none'",
@@ -47,7 +47,7 @@
     "reportOnly": false,
     "setAllHeaders": true
   },
-  "img_proxy_prefix": "https://steemitdevimages.com/",
+  "img_proxy_prefix": "https://steemitimages.com/",
   "ipfs_prefix": false,
   "mixpanel": false,
   "newrelic": false,
@@ -77,10 +77,10 @@
       "waiting_list_invite": false
     }
   },
-  "server_session_secret": "exiKdyF+IwRIXJDmtGIl4vWUz4i3eVSISpfZoeYc0s4=",
-  "session_cookie_key": "stm-dev",
+  "server_session_secret": "N45JNtS3k6okzQojYlGj/7gQJrHF0DA8QX+pT6zZVRY=",
+  "session_cookie_key": "stm",
   "session_key": "steemses",
-  "site_domain": "steemitdev.com",
+  "site_domain": "steemit.com",
   "tarantool": {
     "host": "localhost",
     "password": "",
@@ -95,9 +95,13 @@
     "account_sid": false,
     "auth_token": false
   },
-  "upload_image": false,
-  "steemd_connection_client": "wss://steemd.steemit.com",
-  "steemd_connection_server": "wss://steemd.steemit.com",
+  "upload_image": "https://steemitimages.com",
+  "steemd_connection_client": "https://api.steemit.com",
+  "steemd_connection_server": "https://api.steemit.com",
   "chain_id": "0000000000000000000000000000000000000000000000000000000000000000",
-  "address_prefix": "STM"
+  "address_prefix": "STM",
+  "enable_beneficiaries": true,
+  "beneficiarires": {
+    "primary": "minnowsupport"
+  }
 }
