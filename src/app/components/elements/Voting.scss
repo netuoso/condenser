@@ -123,31 +123,33 @@
   }
   circle {
     @include themify($themes) {
-      fill: themed('textColorError');
-      stroke: themed('textColorError');
+      fill: themed('colorAccentDown');
+      stroke: themed('colorAccentDown');
     }
   }
   a:hover {
     path {
       fill: #fff;
       @include themify($themes) {
-        stroke: themed('textColorError');
+        stroke: themed('colorAccentDownHover');
       }
     }
     circle {
       @include themify($themes) {
-        background-color: themed('textColorError');
-        fill: themed('textColorError');
-        stroke: themed('textColorError');
+        background-color: themed('colorAccentDown');
+        fill: themed('colorAccentDown');
+        stroke: themed('colorAccentDown');
       }
     }
   }
   // exclude small devices
   @media screen and (min-width: 39.9375em) {
     .Icon:hover {
-      background-color: $color-red;
+      @include themify($themes) {
+        background-color: themed('colorAccentDownHover');
+      }
       box-shadow: 0 0 0 rgba(75, 162, 242, 1);
-      animation: redpulse 2s infinite;
+      animation: greypulse 2s infinite;
     }
   }
 }
@@ -155,7 +157,9 @@
 .Voting__button-down.votingDown {
   padding-right: 0.5rem;
   svg {
-    border: 1px solid $color-red;
+    @include themify($themes) {
+      border: 1px solid themed('colorAccentDownHover');
+    }
     border-radius: 50%;
     border-right-color: transparent;
     border-top-color: transparent;
@@ -195,16 +199,18 @@
     fill: #fff;
   }
   .Icon {
-    background-color: $color-red;
+    @include themify($themes) {
+      background-color: themed('colorAccentDown');
+    }
     &:hover {
       animation: none !important;
     }
   }
   circle {
     @include themify($themes) {
-      background-color: themed('textColorError');
-      fill: themed('textColorError');
-      stroke: themed('textColorError');
+      background-color: themed('colorAccentDown');
+      fill: themed('colorAccentDown');
+      stroke: themed('colorAccentDown');
     }
   }
   a:hover {
@@ -389,7 +395,9 @@
       display: inline-block;
       position: absolute;
       &:active {
-        background: $color-red;
+        @include themify($themes) {
+          background: themed('colorAccentDown');
+        }
       }
     }
   }
@@ -401,7 +409,9 @@
     margin-top: 18px;
     .rangeslider__fill {
       height: 100%;
-      background: $color-red;
+      @include themify($themes) {
+        background: themed('colorAccentDown');
+      }
       box-shadow: none;
       left: 0;
     }
@@ -473,29 +483,29 @@
 }
 
 /* Pulse for downvote action */
-@-webkit-keyframes redpulse {
+@-webkit-keyframes greypulse {
     0% {
-        -webkit-box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
+        -webkit-box-shadow: 0 0 0 0 rgba(140, 140, 140, 2);
     }
     70% {
-        -webkit-box-shadow: 0 0 0 10px rgba(255, 25, 15, 1);
+        -webkit-box-shadow: 0 0 0 10px rgba(140, 140, 140, 1);
     }
     100% {
-        -webkit-box-shadow: 0 0 0 0 rgba(255, 25, 15, 1);
+        -webkit-box-shadow: 0 0 0 0 rgba(140, 140, 140, 1);
     }
 }
-@keyframes redpulse {
+@keyframes greypulse {
     0% {
-        -moz-box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
-        box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
+        -moz-box-shadow: 0 0 0 0 rgba(140, 140, 140, 2);
+        box-shadow: 0 0 0 0 rgba(140, 140, 140, 2);
     }
     70% {
-        -moz-box-shadow: 0 0 0 10px rgba(255, 25, 15, 0);
-        box-shadow: 0 0 0 10px rgba(255, 25, 15, 0);
+        -moz-box-shadow: 0 0 0 10px rgba(140, 140, 140, 0);
+        box-shadow: 0 0 0 10px rgba(140, 140, 140, 0);
     }
     100% {
-        -moz-box-shadow: 0 0 0 0 rgba(255, 25, 15, 0);
-        box-shadow: 0 0 0 0 rgba(255, 25, 15, 0);
+        -moz-box-shadow: 0 0 0 0 rgba(140, 140, 140, 0);
+        box-shadow: 0 0 0 0 rgba(140, 140, 140, 0);
     }
 }
 
