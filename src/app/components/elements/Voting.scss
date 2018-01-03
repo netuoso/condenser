@@ -83,7 +83,7 @@
   }
 }
 
-.Voting__button-up > a:hover, a.confirm_weight:hover {
+.Voting__button-up > a:hover, a.confirm_weight_up:hover {
     path {
         fill: #fff;
     }
@@ -110,26 +110,56 @@
   }
 }
 
-.Voting__button-down.votingDown svg {
-  border: 1px solid $color-red;
-  border-radius: 50%;
-  border-right-color: transparent;
-  border-top-color: transparent;
-  animation: loading 500ms infinite linear;
+.Voting__button-down {
+  .Icon {
+    margin-left: 0;
+    border-radius: 50%;
+  }
+  > a {
+    padding-right: 0;
+  }
+  path {
+    fill: #ccc;
+  }
+  circle {
+    @include themify($themes) {
+      fill: themed('textColorError');
+      stroke: themed('textColorError');
+    }
+  }
+  a:hover {
+    path {
+      fill: #fff;
+      @include themify($themes) {
+        stroke: themed('textColorError');
+      }
+    }
+    circle {
+      @include themify($themes) {
+        background-color: themed('textColorError');
+        fill: themed('textColorError');
+        stroke: themed('textColorError');
+      }
+    }
+  }
+  // exclude small devices
+  @media screen and (min-width: 39.9375em) {
+    .Icon:hover {
+      background-color: $color-red;
+      box-shadow: 0 0 0 rgba(75, 162, 242, 1);
+      animation: redpulse 2s infinite;
+    }
+  }
 }
 
-.Voting__button-down {
-  margin-left: 0.25rem;
-  .Voting__button-downvotes {
-    color: #aaa;
-    font-size: 80%;
-    vertical-align: 15%;
-    padding-right: 0.1rem;
-    cursor: default;
-  }
-
-  a:hover path {
-    fill: $color-red;
+.Voting__button-down.votingDown {
+  padding-right: 0.5rem;
+  svg {
+    border: 1px solid $color-red;
+    border-radius: 50%;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    animation: loading 500ms infinite linear;
   }
 }
 
@@ -157,11 +187,40 @@
     @include themify($themes) {
       fill: themed('colorAccentHover');
       stroke: themed('colorAccentHover');
-    }  
+    }
 }
 
-.Voting__button--downvoted path {
-  fill: $color-red;
+.Voting__button--downvoted {
+  path {
+    fill: #fff;
+  }
+  .Icon {
+    background-color: $color-red;
+    &:hover {
+      animation: none !important;
+    }
+  }
+  circle {
+    @include themify($themes) {
+      background-color: themed('textColorError');
+      fill: themed('textColorError');
+      stroke: themed('textColorError');
+    }
+  }
+  a:hover {
+    path {
+      @include themify($themes) {
+        fill: themed('textColorError');
+        stroke: themed('textColorError');
+      }
+    }
+    circle {
+      @include themify($themes) {
+        fill: themed('textColorError');
+        stroke: themed('textColorError');
+      }
+    }
+  }
 }
 
 .Voting .DropdownMenu ul {
@@ -216,34 +275,6 @@
   }
 }
 
-.Voting__adjust_weight_down {
-    @extend .Voting__adjust_weight;
-
-    @include themify($themes) {
-      background-color: themed('backgroundColor'); 
-    } 
-
-    right: 0;
-    width: auto !important;
-    max-width: 500px;
-
-    div.clear {
-      clear: both;
-    }
-    p, span {
-      white-space: normal !important;
-    }
-    .weight-display {
-      color: $color-red !important;
-    }
-    .rangeslider {
-      margin-right: 2rem;
-    }
-    .close-button {
-      right: 0;
-    }
-}
-
 .Voting__adjust_weight {
   padding: 20px 20px 20px;
   margin-right: 10px;
@@ -261,7 +292,7 @@
     color: $dark-gray;
     line-height: 2.6rem;
   }
-  a.confirm_weight {
+  a.confirm_weight_up {
     float: left;
     width: 2rem;
     height: 2rem;
@@ -320,6 +351,81 @@
   }
 }
 
+.Voting__adjust_weight_down {
+  padding: 20px 20px 20px;
+  margin-right: 10px;
+  width: 350px;
+  min-width: 320px;
+  overflow: hidden;
+  .Icon:hover {
+    animation: none !important;
+  }
+  .weight-display {
+    width: 3rem;
+    float: left;
+    margin-right: 0.5rem;
+    text-align: right;
+    color: $dark-gray;
+    line-height: 2.6rem;
+  }
+  a.confirm_weight_down {
+    float: left;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2.6rem;
+  }
+  .rangeslider {
+    position: relative;
+    float: left;
+    background: #e6e6e6;
+    .rangeslider__fill, .rangeslider__handle {
+      position: absolute;
+    }
+    &, .rangeslider__fill {
+      display: block;
+      box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+    .rangeslider__handle {
+      background: #fff;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      display: inline-block;
+      position: absolute;
+      &:active {
+        background: $color-red;
+      }
+    }
+  }
+  .rangeslider-horizontal {
+    height: 10px;
+    width: 200px;
+    background: none;
+    float: left;
+    margin-top: 18px;
+    .rangeslider__fill {
+      height: 100%;
+      background: $color-red;
+      box-shadow: none;
+      left: 0;
+    }
+    .rangeslider__handle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      top: -10px;
+      &:active {
+        box-shadow: none;
+      }
+    }
+  }
+  .Voting__adjust_weight_close {
+    position: static;
+    line-height: 2.6rem;
+    font-size: 2rem;
+    margin-left: 1rem;
+  }
+}
 
 @media screen and (max-width: 39.9375em) {
   .Voting__button-up {
@@ -367,6 +473,33 @@
     100% {
         -moz-box-shadow: 0 0 0 0 rgba(6, 214, 169, 0);
         box-shadow: 0 0 0 0 rgba(6, 214, 169, 0);
+    }
+}
+
+/* Pulse for downvote action */
+@-webkit-keyframes redpulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(255, 25, 15, 1);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 25, 15, 1);
+    }
+}
+@keyframes redpulse {
+    0% {
+        -moz-box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
+        box-shadow: 0 0 0 0 rgba(255, 25, 15, 2);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(255, 25, 15, 0);
+        box-shadow: 0 0 0 10px rgba(255, 25, 15, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(255, 25, 15, 0);
+        box-shadow: 0 0 0 0 rgba(255, 25, 15, 0);
     }
 }
 

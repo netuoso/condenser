@@ -192,9 +192,6 @@ class PostSummary extends React.Component {
                         </Link>
                     </div>
                 </div>
-                <div className="articles__flag clearfix">
-                    <Voting post={post} flag />
-                </div>
             </div>
         );
 
