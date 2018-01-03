@@ -209,16 +209,12 @@
   }
   a:hover {
     path {
-      @include themify($themes) {
-        fill: themed('textColorError');
-        stroke: themed('textColorError');
-      }
+      fill: #fff;
+      stroke: #fff;
     }
     circle {
-      @include themify($themes) {
-        fill: themed('textColorError');
-        stroke: themed('textColorError');
-      }
+      fill: #fff;
+      stroke: #fff;
     }
   }
 }
