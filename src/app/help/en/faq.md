@@ -50,7 +50,7 @@
 
 ### <span id="Table_of_Contents_Posting">Posting</span>
 - <a href="#What_can_users_post_to_Steemit">What can users post to Steemit?</a>
-- <a href="#What_are_the_different_choices_for_post_rewards__50__50___Power_Up_100___Decline_Payout">What are the different choices for post rewards (50%/50%, Power Up 100%, Decline Payout)?</a>
+- <a href="#What_are_the_different_choices_for_post_rewards__50__50___Power_Up_100___Decline_Payout">What are the different choices for post rewards (50%/50%, Power Up 100%, Burn Author Rewards, Decline Payout)?</a>
 - <a href="#How_do_I_add_images_and_photos_to_my_posts">How do I add images and photos to my posts?</a>
 - <a href="#How_do_I_set_the_thumbnail_image_for_my_post">How do I set the thumbnail image for my post?</a>
 - <a href="#What_is_the_recommend_aspect_ratio_for_thumbnail_images">What is the recommend aspect ratio for thumbnail images?</a>
@@ -470,11 +470,13 @@ English is the most-used language used on the Steemit platform, but communities 
 Steem is an open platform meant to host and welcome any legal content. Users can post anything they want, whether it be phrases, quotes, blogs, anecdotes, photos, videos, memes, songs, and more. Be creative!
 
 <a href="#Table_of_Contents_Posting">^</a>
-## <span id="What_are_the_different_choices_for_post_rewards__50__50___Power_Up_100___Decline_Payout">What are the different choices for post rewards (50%/50%, Power Up 100%, Decline Payout)?</span>
+## <span id="What_are_the_different_choices_for_post_rewards__50__50___Power_Up_100___Decline_Payout">What are the different choices for post rewards (50%/50%, Power Up 100%, Burn Author Rewards, Decline Payout)?</span>
 
 - **50%/50%** - This rewards in half STEEM Power, and half liquid STEEM / Steem Dollars. The ratio of liquid STEEM to Steem Dollars rewarded is based on network conditions at the time of payout. This is the default payout option.
 
 - **Power Up 100%** - This option rewards the post in 100% STEEM Power.
+
+- **Burn Author Rewards** - This option burns all author rewards, except those to beneficiaries. This results in curators still receving rewards for voting the post, and the author rewards removed from the available supply, benefitting everyone.
 
 - **Decline Payout** - Use this option to receive no post rewards. Votes will affect the post's position on the trending ranking but no rewards are paid from Steem's reward pool. Replies made to the post are still eligible for rewards.
 

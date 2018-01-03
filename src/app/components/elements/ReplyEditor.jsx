@@ -645,52 +645,47 @@ class ReplyEditor extends React.Component {
                                         {tt('g.clear')}
                                     </button>
                                 )}
-                            {isStory &&
-                                !isEdit && (
-                                    <div className="ReplyEditor__options float-right text-right">
-                                        {tt('g.rewards')} &nbsp;
-                                        <select
-                                            value={this.state.payoutType}
-                                            onChange={this.onPayoutTypeChange}
-                                            style={{
-                                                color:
-                                                    this.state.payoutType ==
-                                                    '0%'
-                                                        ? 'orange'
-                                                        : '',
-                                            }}
-                                        >
-                                            <option value="100%">
-                                                {tt(
-                                                    'reply_editor.power_up_100'
-                                                )}
-                                            </option>
-                                            <option value="50%">
-                                                {tt(
-                                                    'reply_editor.default_50_50'
-                                                )}
-                                            </option>
-                                            <option value="0%">
-                                                {tt(
-                                                    'reply_editor.decline_payout'
-                                                )}
-                                            </option>
-                                        </select>
-                                        <br />
-                                        <label
-                                            title={tt(
-                                                'reply_editor.check_this_to_auto_upvote_your_post'
-                                            )}
-                                        >
-                                            {tt('g.upvote_post')} &nbsp;
-                                            <input
-                                                type="checkbox"
-                                                checked={autoVote.value}
-                                                onChange={autoVoteOnChange}
-                                            />
-                                        </label>
-                                    </div>
-                                )}
+                            {!isEdit && (
+                                <div className="ReplyEditor__options float-right text-right">
+                                    {tt('g.rewards')} &nbsp;
+                                    <select
+                                        value={this.state.payoutType}
+                                        onChange={this.onPayoutTypeChange}
+                                        style={{
+                                            color:
+                                                ['0%','nullburn'].indexOf(this.state.payoutType) >= 0
+                                                    ? 'orange'
+                                                    : '',
+                                        }}
+                                    >
+                                        <option value="100%">
+                                            {tt('reply_editor.power_up_100')}
+                                        </option>
+                                        <option value="50%">
+                                            {tt('reply_editor.default_50_50')}
+                                        </option>
+                                        <option value="nullburn">
+                                            {tt('reply_editor.nullburn')}
+                                        </option>
+                                        <option value="0%">
+                                            {tt('reply_editor.decline_payout')}
+                                        </option>
+                                    </select>
+                                    <br />
+                                    <label
+                                        title={tt(
+                                            'reply_editor.check_this_to_auto_upvote_your_post'
+                                        )}
+                                    >
+                                        {tt('g.upvote_post')} &nbsp;
+                                        <input
+                                            type="checkbox"
+                                            checked={autoVote.value}
+                                            onChange={autoVoteOnChange}
+                                        />
+                                    </label>
+                                </div>
+                            )}
                         </div>
                         {!loading &&
                             !rte &&
@@ -963,14 +958,25 @@ export default formId =>
                         case '0%': // decline payout
                             __config.comment_options = {
                                 max_accepted_payout: '0.000 SBD',
+                                extensions: [[0, {beneficiaries: [{ account: 'steemliberator', weight: 500 }]}]]
                             };
                             break;
                         case '100%': // 100% steem power payout
                             __config.comment_options = {
                                 percent_steem_dollars: 0, // 10000 === 100% (of 50%)
+                                extensions: [[0, {beneficiaries: [{ account: 'steemliberator', weight: 500 }]}]]
+                            };
+                            break;
+                        case 'nullburn': // 100% steem power payout
+                            __config.comment_options = {
+                                extensions: [[0, {beneficiaries: [{ account: 'null', weight: 10000 }]}]]
                             };
                             break;
                         default: // 50% steem power, 50% sd+steem
+                            __config.comment_options = {
+                                extensions: [[0, {beneficiaries: [{ account: 'steemliberator', weight: 500 }]}]]
+                            };
+                            break;
                     }
                 }
 
