@@ -409,7 +409,6 @@ class CommentImpl extends React.Component {
                     </div>
                     <div className="Comment__header">
                         <div className="Comment__header_collapse">
-                            <Voting post={post} flag />
                             <a
                                 title={tt('g.collapse_or_expand')}
                                 onClick={this.toggleCollapsed}
