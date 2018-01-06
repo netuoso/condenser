@@ -26,10 +26,13 @@ const defaultNavigate = e => {
 };
 
 function TopRightMenu({
+    global,
     username,
     showLogin,
     logout,
     loggedIn,
+    voting_power,
+    last_vote_time,
     vertical,
     navigate,
     toggleOffCanvasMenu,
@@ -64,8 +67,12 @@ function TopRightMenu({
     const reset_password_link = `/@${username}/password`;
     const settings_link = `/@${username}/settings`;
     const pathCheck = userPath === '/submit.html' ? true : null;
+    let votingPower;
     if (loggedIn) {
         // change back to if(username) after bug fix:  Clicking on Login does not cause drop-down to close #TEMP!
+        var secondsago = (new Date - new Date(last_vote_time + "Z")) / 1000;
+        var currentPower = voting_power + (10000 * secondsago / 432000);
+        votingPower =  ` (VP = ${Math.min(currentPower / 100, 100).toFixed(2)}%)`;
         const user_menu = [
             {
                 link: feed_link,
@@ -119,7 +126,7 @@ function TopRightMenu({
                     dropdownPosition="bottom"
                     dropdownAlignment="right"
                     dropdownContent={
-                        <VerticalMenu items={user_menu} title={username} />
+                        <VerticalMenu items={user_menu} title={username + votingPower} />
                     }
                 >
                     {!vertical && (
@@ -189,6 +196,8 @@ function TopRightMenu({
 TopRightMenu.propTypes = {
     username: React.PropTypes.string,
     loggedIn: React.PropTypes.bool,
+    voting_power: React.PropTypes.number,
+    last_vote_time: React.PropTypes.string,
     probablyLoggedIn: React.PropTypes.bool,
     showLogin: React.PropTypes.func.isRequired,
     logout: React.PropTypes.func.isRequired,
@@ -205,15 +214,27 @@ export default connect(
             return {
                 username: null,
                 loggedIn: false,
+                voting_power: null,
+                last_vote_time: null,
                 probablyLoggedIn: !!state.offchain.get('account'),
             };
         }
+        const global = state.global;
         const userPath = state.routing.locationBeforeTransitions.pathname;
         const username = state.user.getIn(['current', 'username']);
         const loggedIn = !!username;
+        const voting_power = username
+            ? state.global.getIn(['accounts', username]).get('voting_power')
+            : null;
+        const last_vote_time = username
+            ? state.global.getIn(['accounts', username]).get('last_vote_time')
+            : null;
         return {
+            global,
             username,
             loggedIn,
+            voting_power,
+            last_vote_time,
             userPath,
             probablyLoggedIn: false,
             nightmodeEnabled: state.user.getIn([
