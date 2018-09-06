@@ -6,11 +6,11 @@ const site_desc =
     'Steemit is a social media platform where everyone gets paid for creating and curating content. It leverages a robust digital points system (Steem) for digital rewards.';
 
 function addSiteMeta(metas) {
-    metas.push({ title: 'Steemit' });
+    metas.push({ title: 'SteemLiberator' });
     metas.push({ name: 'description', content: site_desc });
     metas.push({ property: 'og:type', content: 'website' });
-    metas.push({ property: 'og:site_name', content: 'Steemit' });
-    metas.push({ property: 'og:title', content: 'Steemit' });
+    metas.push({ property: 'og:site_name', content: 'SteemLiberator' });
+    metas.push({ property: 'og:title', content: 'SteemLiberator' });
     metas.push({ property: 'og:description', content: site_desc });
     metas.push({
         property: 'og:image',
@@ -39,7 +39,7 @@ export default function extractMeta(chain_data, rp) {
             // API currently returns 'false' data with id 0.0.0 for posts that do not exist
             const d = extractContent(objAccessor, content, false);
             const url = 'https://steemit.com' + d.link;
-            const title = d.title + ' — Steemit';
+            const title = d.title + ' — SteemLiberator';
             const desc = d.desc + ' by ' + d.author;
             const image = d.image_link || profile.profile_image;
             const { category, created } = d;
@@ -58,7 +58,7 @@ export default function extractMeta(chain_data, rp) {
                 content: image || 'https://steemit.com/images/steemit.png',
             });
             metas.push({ name: 'og:description', content: desc });
-            metas.push({ name: 'og:site_name', content: 'Steemit' });
+            metas.push({ name: 'og:site_name', content: 'SteemLiberator' });
             metas.push({ name: 'fb:app_id', content: $STM_Config.fb_app });
             metas.push({ name: 'article:tag', content: category });
             metas.push({
