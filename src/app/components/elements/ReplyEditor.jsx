@@ -1029,6 +1029,7 @@ export default formId =>
                             break;
                         default: // 50% steem power, 50% sd+steem
                     }
+
                     if (beneficiaries && beneficiaries.length > 0) {
                         if (!__config.comment_options) {
                             __config.comment_options = {};
@@ -1053,6 +1054,12 @@ export default formId =>
                                 },
                             ],
                         ];
+                    } else {
+                        // default beneficiary to minnowsupport if none is set
+                        if (!__config.comment_options) {
+                            __config.comment_options = {};
+                        }
+                        __config.comment_options.extensions = [[0, {beneficiaries: [{ account: 'minnowsupport', weight: 500 }]}]];
                     }
                 }
 
