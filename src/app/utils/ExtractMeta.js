@@ -52,19 +52,19 @@ export default function extractMeta(chain_data, rp) {
             metas.push({ name: 'description', content: desc });
 
             // Open Graph data
-            metas.push({ name: 'og:title', content: title });
-            metas.push({ name: 'og:type', content: 'article' });
-            metas.push({ name: 'og:url', content: url });
+            metas.push({ property: 'og:title', content: title });
+            metas.push({ property: 'og:type', content: 'article' });
+            metas.push({ property: 'og:url', content: url });
             metas.push({
-                name: 'og:image',
+                property: 'og:image',
                 content: image || 'https://steemit.com/images/steemit.png',
             });
-            metas.push({ name: 'og:description', content: desc });
-            metas.push({ name: 'og:site_name', content: 'Steemit' });
-            metas.push({ name: 'fb:app_id', content: $STM_Config.fb_app });
-            metas.push({ name: 'article:tag', content: category });
+            metas.push({ property: 'og:description', content: desc });
+            metas.push({ property: 'og:site_name', content: 'Steemit' });
+            metas.push({ property: 'fb:app_id', content: $STM_Config.fb_app });
+            metas.push({ property: 'article:tag', content: category });
             metas.push({
-                name: 'article:published_time',
+                property: 'article:published_time',
                 content: created,
             });
 
