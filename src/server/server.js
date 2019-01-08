@@ -28,6 +28,8 @@ import secureRandom from 'secure-random';
 import userIllegalContent from 'app/utils/userIllegalContent';
 import koaLocale from 'koa-locale';
 import { getSupportedLocales } from './utils/misc';
+import { pinnedPosts } from './utils/PinnedPosts';
+import GDPRUserList from 'app/utils/GDPRUserList';
 
 if (cluster.isMaster) console.log('application server starting, please wait.');
 
@@ -56,6 +58,15 @@ app.use(
     mount(
         '/images',
         staticCache(path.join(__dirname, '../app/assets/images'), cacheOpts)
+    )
+);
+app.use(
+    mount(
+        '/javascripts',
+        staticCache(
+            path.join(__dirname, '../app/assets/javascripts'),
+            cacheOpts
+        )
     )
 );
 // Proxy asset folder to webpack development server in development mode
@@ -111,6 +122,25 @@ session(app, {
 });
 csrf(app);
 
+// If a user is logged in, we need to make sure that they receive the correct
+// headers.
+app.use(function*(next) {
+    if (this.request.url.startsWith('/api')) {
+        yield next;
+        return;
+    }
+
+    const auth = this.request.query.auth;
+    if (auth) {
+        this.request.url = this.request.url.replace(/[?&]{1}auth=true/, '');
+        this.session['auth'] = true;
+        this.session.save();
+        this.request.query.auth = null;
+    }
+
+    yield next;
+});
+
 koaLocale(app);
 
 function convertEntriesToArrays(obj) {
@@ -154,7 +184,7 @@ app.use(function*(next) {
         } else {
             userCheck = p.split('/')[1].slice(1);
         }
-        if (userIllegalContent.includes(userCheck)) {
+        if (userIllegalContent.includes(userCheck) || GDPRUserList.includes(userCheck)) {
             console.log('Illegal content user found blocked', userCheck);
             this.status = 451;
             return;
@@ -260,9 +290,14 @@ usePostJson(app);
 useAccountRecoveryApi(app);
 useGeneralApi(app);
 
+app.use(function*(next) {
+    this.adsEnabled =
+        !(this.session.auth || this.session.a) && config.google_ad_enabled;
+    yield next;
+});
+
 // helmet wants some things as bools and some as lists, makes config difficult.
 // our config uses strings, this splits them to lists on whitespace.
-
 if (env === 'production') {
     const helmetConfig = {
         directives: convertEntriesToArrays(config.get('helmet.directives')),
@@ -273,11 +308,54 @@ if (env === 'production') {
     if (helmetConfig.directives.reportUri === '-') {
         delete helmetConfig.directives.reportUri;
     }
+
+    if (!helmetConfig.directives.frameSrc) {
+        helmetConfig.directives.frameSrc = [
+            `'self'`,
+            'googleads.g.doubleclick.net',
+            'https:',
+        ];
+    }
+
     app.use(helmet.contentSecurityPolicy(helmetConfig));
+    app.use(function*(next) {
+        if (this.adsEnabled) {
+            // If user is signed out, enable ads.
+            [
+                'content-security-policy',
+                'x-content-security-policy',
+                'x-webkit-csp',
+            ].forEach(header => {
+                let policy = this.response.header[header]
+                    .split(/;\s+/)
+                    .map(el => {
+                        if (el.startsWith('script-src')) {
+                            const oldScriptSrc = el.replace(/^script-src/, '');
+                            return `script-src 'unsafe-inline' 'unsafe-eval' data: https: ${
+                                oldScriptSrc
+                            }`;
+                        } else {
+                            return el;
+                        }
+                    })
+                    .join('; ');
+                this.response.set(header, policy);
+            });
+            yield next;
+        } else {
+            // If user is logged in, do not modify CSP headers further.
+            yield next;
+        }
+    });
 }
 
 if (env !== 'test') {
     const appRender = require('./app_render');
+
+    // Load the pinned posts and store them on the ctx for later use. Since
+    // we're inside a generator, we can't `await` here, so we pass a promise
+    // so `src/server/app_render.jsx` can `await` on it.
+    app.pinnedPostsPromise = pinnedPosts();
     app.use(function*() {
         yield appRender(this, supportedLocales, resolvedAssets);
         // if (app_router.dbStatus.ok) recordWebEvent(this, 'page_load');
