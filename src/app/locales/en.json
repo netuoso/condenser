@@ -250,7 +250,7 @@
         }
     },
     "navigation": {
-        "about": "About",
+        "about": "About Steemit, Inc.",
         "explore": "Explore",
         "APP_NAME_whitepaper": "%(APP_NAME)s Whitepaper",
         "third_party_exchanges": "Third-party exchanges:",
@@ -778,7 +778,8 @@
         "sign_up_get_steem": "Sign up. Get STEEM!",
         "returning_users": "Returning Users: ",
         "join_our": "Join our",
-        "sign_transfer": "Sign to complete transfer"
+        "sign_transfer": "Sign to complete transfer",
+        "use_keychain": "Use keychain extension"
     },
     "chainvalidation_js": {
         "account_name_should_not_be_empty": "Account name should not be empty.",

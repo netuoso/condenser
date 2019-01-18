@@ -6,7 +6,7 @@
   "helmet": {
     "directives": {
       "childSrc": "'self' player.twitch.tv www.youtube.com staticxx.facebook.com w.soundcloud.com player.vimeo.com",
-      "connectSrc": "'self' steemit.com https://api.steemit.com api.blocktrades.us",
+      "connectSrc": "'self' steemit.com https://api.steemit.com api.blocktrades.us https://steemitimages.com",
       "defaultSrc": "'self' www.youtube.com staticxx.facebook.com player.vimeo.com",
       "fontSrc": "data: fonts.gstatic.com",
       "frameAncestors": "'none'",
@@ -86,10 +86,14 @@
     },
     "in_feed_1": {
       "slot_id": "9514544128",
-      "layout_key": "-fb+5w+4e-db+86"
+      "layout_key": "-fb+5w+4e-db+86",
+      "every": 8
     },
     "post_footer_1": {
       "slot_id": "5796459261"
+    },
+    "market_1": {
+      "slot_id": "2777377820"
     }
   }
 }
